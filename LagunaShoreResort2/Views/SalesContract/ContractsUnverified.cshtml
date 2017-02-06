@@ -1,0 +1,123 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.SalesContract>
+
+@{
+    ViewBag.Title = "ContractsUnverified";
+}
+
+<h2>ContractsUnverified</h2>
+<div class="panel panel-primary">
+    <div class="panel-heading">Canceled Contracts</div>
+    @using (Html.BeginForm("CanceledContracts", "SalesContract", FormMethod.Get, new { @class = "panel-body filter" }))
+    {
+        <div class="col-xs-3">
+            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" class="form-control" @*style="width:160px"*@ name="contractType" id="contractTypeID">
+                <option value="../SalesContract/ContractsUnverified">Fractionals Contracts Unverified</option>
+                <option value="../TrialMemberships/ContractsUnverified">TrialMember Contracts Unverified</option>
+                <option value="../SalesContract/Index"> All Fractionals Contracts</option>
+                <option value="../TrialMemberships/Index">All Trial Memberships Contracts</option>
+
+            </select>
+        </div>
+    }
+    <div class="panel-body ">
+        @if (Model == null)
+        {
+            <div class="alert alert-info">
+                There are no canceled contracts.
+            </div>
+        }
+        else if (Model.Count() > 0)
+        {
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.contractNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.client.legalName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.client.secondLegalName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.condo.name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.contractDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.saleAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.verifiedByAdmin)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.requestToAccountant)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.canceledContract)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.currency)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.commissionPaid)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.contractNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.client.legalName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.client.secondLegalName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.condo.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.contractDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.saleAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.verifiedByAdmin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.requestToAccountant)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.canceledContract)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.currency)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.commissionPaid)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", new { id = item.salesContractID })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                No contracts were found.
+            </div>
+        }
+
+    </div>
+
+</div>

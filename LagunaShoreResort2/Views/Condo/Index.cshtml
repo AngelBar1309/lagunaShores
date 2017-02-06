@@ -1,0 +1,69 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.Condo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="tableCondo">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phase)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.block)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bedrooms)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HOAYearlyPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phase)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.block)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bedrooms)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HOAYearlyPayment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.condoID })
+            @if (User.IsInRole("Administrador"))
+            {
+             <span>|</span>
+            @Html.ActionLink("Edit", "Edit", new { id=item.condoID }) 
+             <span>|</span>
+            @Html.ActionLink("Delete", "Delete", new { id=item.condoID })
+            }
+        </td>
+    </tr>
+}
+
+</table>

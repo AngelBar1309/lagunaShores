@@ -1,0 +1,122 @@
+﻿@model LagunaShoreResort2.Models.Deposit
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    <div id="panelDepositDetails" class="panel panel-info">
+        <div class="panel-heading">Details</div>
+        <div class="panel-body row">
+            <dl class="dl-horizontal col-md-6">
+                <dt>
+                    @Html.DisplayNameFor(model => model.noFolio)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.noFolio)
+                </dd>
+                @if (Model.salesContractID!=null)
+                { 
+                <dt>
+                    @Html.DisplayNameFor(model => model.salesContract.contractNumber)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.salesContract.contractNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.salesContract.client.legalName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.salesContract.client.legalName)
+                </dd>
+                }
+                @if (Model.trialMembershipID!=null) 
+                {
+                
+                    <dt>
+                    @Html.DisplayNameFor(model => model.trialMemberships.contractNumberTM)
+                     </dt>
+                    <dd>
+                     @Html.DisplayFor(model => model.trialMemberships.contractNumberTM)
+                    </dd>
+                     <dt>
+                    @Html.DisplayNameFor(model => model.trialMemberships.client.legalName)
+                     </dt>
+                    <dd>
+                     @Html.DisplayFor(model => model.trialMemberships.client.legalName)
+                    </dd>
+                }
+                <dt>
+                    @Html.DisplayNameFor(model => model.DepositDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DepositDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Amount)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CurrencyType)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CurrencyType)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.ExchangeRate)
+                </dt>
+               
+                    <dd>
+                        @Html.DisplayFor(model => model.ExchangeRate)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RefNumber)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.RefNumber)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PayMethod)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PayMethod)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Refund)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Refund)
+                    </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.depositComments)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.depositComments)
+                </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.noFolio, contractType = Model.getContractType()})|
+            @Html.ActionLink("Back to List", "Index")
+        </p>

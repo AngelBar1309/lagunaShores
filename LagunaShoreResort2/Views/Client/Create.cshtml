@@ -1,0 +1,178 @@
+﻿@model LagunaShoreResort2.Models.Client
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Create Client</h4>
+          
+            <div class="panel-body row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="dl-horizontal col-md-4">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.firstName, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.firstName, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.middleName, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.middleName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.middleName, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.lastName, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.emailAddress, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.emailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.emailAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                       
+                   
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.primaryPhoneNumber, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.primaryPhoneNumber, new { htmlAttributes = new { @class = "form-control", data_mask = "(000) 000-0000" } })
+                            @Html.ValidationMessageFor(model => model.primaryPhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                  
+                </div>
+                <div class="dl-horizontal col-md-4">
+
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.primaryResidenceAddress, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.primaryResidenceAddress, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.primaryResidenceAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.secondFirstName, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.secondFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.secondFirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.secondMiddleName, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.secondMiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.secondMiddleName, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.secondLastName, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.secondLastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.secondLastName, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.secondEmailAddress, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.secondEmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.secondEmailAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <br />
+                </div>
+                <div class="dl-horizontal col-md-4">
+                    <br />
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.secondPhoneNumber, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.secondPhoneNumber, new { htmlAttributes = new { @class = "form-control", data_mask = "(000) 000-0000" } })
+                            @Html.ValidationMessageFor(model => model.secondPhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                  
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.city, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.state, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.zipCode, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.zipCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.zipCode, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.typeOfID, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.typeOfID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.typeOfID, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.nationality, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.nationality, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.nationality, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+              </div>
+
+                <div class="panel-body row">
+                    <input type="submit" value="Create" class="btn btn-success btn-lg col-md-2 col-md-offset-5">
+                </div>
+        </div>
+     </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/scriptDate.js"></script>
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+
+}
+<script>
+    $("#btn").change(function () {
+        var CortarTexto = $("#texto").val();
+        $("#parrafos").val();
+
+    });
+
+</script>
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+<!-- polyfiller file to detect and load polyfills -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+<script>
+    webshims.setOptions('waitReady', false);
+    webshims.setOptions('forms-ext', { types: 'date' });
+    webshims.polyfill('forms forms-ext');
+</script>

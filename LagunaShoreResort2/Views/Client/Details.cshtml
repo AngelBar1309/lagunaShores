@@ -1,0 +1,528 @@
+﻿@model LagunaShoreResort2.Models.Client
+@using LagunaShoreResort2.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>
+@if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) 
+    || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)
+    || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.clientID }) 
+    }|
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<div>
+    <div id="panelDepositDetails" class="panel panel-info">
+        <div class="panel-heading">Details</div>
+        <div class="panel-body row">
+            <dl class="dl-horizontal col-md-6">
+                <dt>
+                    @Html.DisplayNameFor(model => model.firstName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.firstName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.middleName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.middleName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.lastName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.lastName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.legalName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.legalName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.emailAddress)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.emailAddress)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.primaryPhoneNumber)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.primaryPhoneNumber)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.primaryResidenceAddress)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.primaryResidenceAddress)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.secondFirstName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.secondFirstName)
+                </dd>
+            </dl>
+            <dl class="dl-horizontal col-md-6">
+                <dt>
+                    @Html.DisplayNameFor(model => model.secondMiddleName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.secondMiddleName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.secondLastName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.secondLastName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.secondLegalName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.secondLegalName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.secondEmailAddress)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.secondEmailAddress)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.secondPhoneNumber)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.secondPhoneNumber)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.city)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.city)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.state)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.state)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.zipCode)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.zipCode)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.typeOfID)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.typeOfID)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.nationality)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.nationality)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+    {
+        @Html.ActionLink("New Fractional Contract", "Create", "SalesContract", new { id = Model.clientID }, 
+        new {@class = "btn btn-small btn-primary" })
+    }
+<div id="panelDepositDetails" class="panel panel-info">
+    <div class="panel-heading">
+        SalesContract
+    </div>
+    <div class="panel-body">
+        @if (Model.salesContracts == null || Model.salesContracts.Count() == 0)
+        {
+        <div class="alert alert-info">
+            No fractional contracts registered for this client.
+        </div>
+        }
+        else if (Model.salesContracts.Count() > 0)
+        {
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().contractNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().condo.name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().client.legalName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().client.secondLegalName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().typeOfFraction)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().contractDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().verifiedByAdmin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().requestToAccountant)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => Model.salesContracts.FirstOrDefault().commissionPaid)
+                </th>
+                <th></th>
+            </tr>
+    @foreach (SalesContract salescontract in Model.salesContracts)
+    {
+        Boolean downPaymentPaid = Deposit.isDownPaymentCompleted(salescontract,null,null);
+    <tr class=@(downPaymentPaid ? "downpayment-paid" : "")>
+        <td>@Html.DisplayFor(modelItem => salescontract.contractNumber)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.condo.name)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.client.legalName)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.client.secondLegalName)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.typeOfFraction)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.contractDate)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.verifiedByAdmin)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.requestToAccountant)</td>
+        <td>@Html.DisplayFor(modelItem => salescontract.commissionPaid)</td>
+        <td class="function-cell">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+
+                    <li>@Html.ActionLink("Details", "Details", "SalesContract", new { id = salescontract.salesContractID }, new { data_modal = "" })</li>
+
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                    {
+                        if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && salescontract.verifiedByAdmin == true)
+                        { }
+                        else
+                        {
+                            <li>@Html.ActionLink("Edit", "Edit", "SalesContract", new { id = salescontract.salesContractID }, new { data_modal = "" })</li>
+
+                        }
+                    }
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                    {
+                        <li>@Html.ActionLink("Add Payment", "Create", "Deposit", new { id = salescontract.salesContractID, contractType = salescontract.contractType }, null)</li>
+                    }
+
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                    {
+                        <li>@Html.ActionLink("Download Contract", "DownloadContractFile", "SalesContract", new { id = salescontract.salesContractID }, null)</li>
+                    }
+                    
+                    @if (downPaymentPaid && (User.IsInRole(AccountRolesNames.ADMINISTRATOR) ||
+                                User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.VLO)
+                                || User.IsInRole(AccountRolesNames.ACCOUNTANT)))
+                    {
+                        <li>@Html.ActionLink("Commission Request", "RequestComission", "SalesContract", new { id = salescontract.salesContractID }, null)</li>
+                    }
+                    <li class="divider"></li>
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                    {
+                        <li>@Html.ActionLink("Delete", "Delete", "SalesContract", new { id = salescontract.salesContractID }, new { data_modal = "" })</li>
+
+                    }
+
+                </ul>
+            </div>
+        </td>
+    </tr>
+}
+        </table>
+        }
+    </div>
+  </div>
+
+    @*Contratos TrialMemberShips*@
+    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+    {
+        @Html.ActionLink("New TrialMemberShips Contract", "Create", "TrialMemberships", new { id = Model.clientID },
+        new { @class = "btn btn-small btn-primary" })
+    }
+    <div id="panelDepositDetails" class="panel panel-info">
+        <div class="panel-heading">
+            TrialMemberShips Contracts
+        </div>
+        <div class="panel-body">
+            @if (Model.trialMemberships == null || Model.trialMemberships.Count() == 0)
+            {
+                <div class="alert alert-info">
+                    No fractional contracts registered for this client.
+                </div>
+            }
+            else if (Model.trialMemberships.Count() > 0)
+            {
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().contractNumberTM)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().client.legalName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().client.secondLegalName)
+                        </th>
+                        @*<th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().condo.name)
+                        </th>*@
+                        @*<th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().typeOfFraction)
+                        </th>*@
+                        <th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().tmContractDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().tmVerifiedByAdmin)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().tmRequestToAccountat)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => Model.trialMemberships.FirstOrDefault().tmCommissionPaid)
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (TrialMemberships trialMemberShips in Model.trialMemberships.OrderByDescending(tm => tm.tmContractDate))
+                    {
+                        Boolean downPaymentPaid = Deposit.isDownPaymentCompleted(null,trialMemberShips,null);
+                        <tr class =@(downPaymentPaid ? "downpayment-paid" : "")>
+                            <td>@Html.DisplayFor(modelItem => trialMemberShips.contractNumberTM)</td>
+                            <td>@Html.DisplayFor(modelItem => trialMemberShips.client.legalName)</td>
+                            <td>@Html.DisplayFor(modelItem => trialMemberShips.client.secondLegalName)</td>
+                            @*<td>@Html.DisplayFor(modelItem => trialMemberShips.condo.name)</td>*@
+                            @*<td>@Html.DisplayFor(modelItem => salescontract.typeOfFraction)</td>*@
+                            <td>@Html.DisplayFor(modelItem => trialMemberShips.tmContractDate)</td>
+                            <td>@Html.DisplayFor(modelItem => trialMemberShips.tmVerifiedByAdmin)</td>
+                            <td>@Html.DisplayFor(modelItem => trialMemberShips.tmRequestToAccountat)</td>
+                            <td>@Html.DisplayFor(modelItem => trialMemberShips.tmCommissionPaid)</td>
+                            <td class="function-cell">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+
+                                        @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                            || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                                        {
+                                            if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && trialMemberShips.tmVerifiedByAdmin == true)
+                                            { }
+                                            else
+                                            {
+                                                <li>@Html.ActionLink("Edit", "Edit", "TrialMemberships", new { id = trialMemberShips.trialMembershipID }, new { data_modal = "" })</li>
+
+                                            }
+                                        }
+                                        <li> @Html.ActionLink("Details", "Details", "TrialMemberships", new { id = trialMemberShips.trialMembershipID }, new { data_modal = "" }) </li>
+                                        @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                            || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                                        {
+                                            <li>@Html.ActionLink("Add Payment", "Create", "Deposit", new { id = trialMemberShips.trialMembershipID, contractType = trialMemberShips.contractType }, null)</li>
+                                        }
+                                        @if (downPaymentPaid &&( User.IsInRole(AccountRolesNames.ADMINISTRATOR) ||
+                                        User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.VLO)
+                                        || User.IsInRole(AccountRolesNames.ACCOUNTANT)))
+                                        {
+                                            <li>@Html.ActionLink("Commission Request", "RequestComission", "TrialMemberships", new { id = trialMemberShips.trialMembershipID }, null)</li>
+                                        }
+                                        <li class="divider"></li>
+                                        @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                                        {
+                                            <li>@Html.ActionLink("Delete", "Delete", new { id = trialMemberShips.trialMembershipID })</li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </td>
+                            </tr>
+                        }
+                </table>
+            }
+        </div>
+     </div>
+    @*Contratos Real State Contracts*@
+    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+    {
+        @Html.ActionLink("New Real State Contract", "Create", "RealStateContracts", new { id = Model.clientID },
+        new { @class = "btn btn-small btn-primary" })
+    }
+    <div id="panelDepositDetails" class="panel panel-info">
+        <div class="panel-heading">
+            Real State Contracts
+        </div>
+        <div class="panel-body">
+            @if (Model.realsStatesOwning == null || Model.realsStatesOwning.Count() == 0)
+            {
+                <div class="alert alert-info">
+                    No Real State contracts registered for this client.
+                </div>
+            }
+            else if (Model.realsStatesOwning.Count() > 0)
+            {
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().clientAssignorID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().condoID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().MLS)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().ownershipHeld)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().saleAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().saleDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.realsStatesOwning.FirstOrDefault().closingDate)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.realsStatesOwning)
+                    {
+                        <tr>
+                            <td>
+                                @if(item.clientAssignor != null){ 
+                                    @(item.clientAssignor.firstName + " "+item.clientAssignor.lastName)
+                                }else
+                                {
+                                    @("No previous owner")
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.condo.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MLS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ownershipHeld)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.saleAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.saleDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.closingDate)
+                            </td>
+                            <td class="function-cell">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+
+                                        <li>@Html.ActionLink("Details", "Details", "RealStateContracts", new { id = item.realStateContractID },null)</li>
+
+                                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                    || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                                            {
+                                                if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && item.verifiedByAdmin == true)
+                                                { }
+                                                else
+                                                {
+                                                    <li>@Html.ActionLink("Edit","Edit", "RealStateContracts", new { id = item.realStateContractID },null)</li>
+
+                                                }
+                                            }
+                                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                                    || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                                            {
+                                                <li>@Html.ActionLink("Add Payment", "Create", "Deposit", new { id = item.realStateContractID, contractType = "RS" }, null)</li>
+                                            }
+                                            <li class="divider"></li>
+                                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                                            {
+                                                <li>@Html.ActionLink("Delete", "Delete", "RealStateContracts", new { id = item.realStateContractID }, null)</li>
+                                            }
+
+
+                                            @if ((User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) 
+                                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)) && item.deposits.Where(d=>d.verification).Count() > 0)
+                                            {
+                                                <li>@Html.ActionLink("Download Contract", "DownloadContractFile","RealStateContracts", new { id = item.realStateContractID }, null)</li>
+                                            }
+
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                    }
+
+                </table>
+            }
+        </div>
+    </div>
+
+</div>
+

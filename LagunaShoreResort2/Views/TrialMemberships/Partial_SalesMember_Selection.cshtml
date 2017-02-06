@@ -1,0 +1,186 @@
+﻿@model LagunaShoreResort2.Models.TrialMemberships
+@using LagunaShoreResort2.Models
+@{
+    List<TrialSalesMembers> salesMembersInContract = new List<TrialSalesMembers>();
+    if (Model != null && Model.trialSalesMembers != null) { salesMembersInContract = Model.trialSalesMembers.ToList(); }
+
+    ApplicationDbContext db = new ApplicationDbContext();
+
+    var mandatoryRoles = db.SalesMemberTypes.Include("rolSalesMembers").Where(r => r.mandatoryTrialManager).ToList();
+    var notMandatoryRoles = db.SalesMemberTypes.Include("rolSalesMembers").Where(r => !r.mandatoryTrialManager).ToList();
+    var allSalesMembers = from sm in db.SalesMembers
+                          select new
+                          {
+                              salesMemberID = sm.salesMemberID,
+                              legalName = sm.firtName + " " + sm.lastName
+                          };
+}
+@*Aqui se agregan los empledos con javascript*@
+<div class="panel-body row">
+    <div id="panelSalesMembersList" class="panel panel-primary">
+        <div class="panel-heading">Sales Members</div>
+        <div class="panel-body">
+            <div class="input_fields_wrap">
+                <!--Members by default-->
+                <fieldset id="defaultSalesMembersSelector">
+                    <legend>Default Sales Members</legend>
+                    <!--For each sales memeber type, a selection row is generated-->
+                    @{
+                        SalesMember selectedMember;
+                        TrialSalesMembers csm = null;
+                        int contador = 1;
+
+                        <!--OPC Member Selection-->
+                        @*OPC Rols are taken*@
+                        Rol opcInHouse = mandatoryRoles.FirstOrDefault(r => r.type == Rol.SalesMembersTypesNames.OPC_IN_HOUSE);
+                        Rol opcOutHouse = mandatoryRoles.FirstOrDefault(r => r.type == Rol.SalesMembersTypesNames.OPC_OUT_HOUSE);
+                        if (opcInHouse != null && opcOutHouse != null)//If both OPC are mandatory
+                        {
+                            //They are removed from mandatoryRoles list, so that they will not be rendered twice
+                            mandatoryRoles.Remove(opcInHouse);
+                            mandatoryRoles.Remove(opcOutHouse);
+
+                            //Get members qualified for OPC Roles
+                            var inHouseSalesMembers = from rolSalesMember in opcInHouse.rolSalesMembers
+                                                      select new
+                                                      {
+                                                          salesMemberID = rolSalesMember.salesMember.salesMemberID,
+                                                          legalName = rolSalesMember.salesMember.firtName + " " + rolSalesMember.salesMember.lastName
+                                                      };
+                            var outHouseSalesMembers = from rolSalesMember in opcOutHouse.rolSalesMembers
+                                                       select new
+                                                       {
+                                                           salesMemberID = rolSalesMember.salesMember.salesMemberID,
+                                                           legalName = rolSalesMember.salesMember.firtName + " " + rolSalesMember.salesMember.lastName
+                                                       };
+
+                            //Determines sales member for current NOT mandatory role, if it was selected, else dummy object is created to render selection panel
+                            if (Model != null)
+                            {
+                                csm = salesMembersInContract.FirstOrDefault(member => member.rolID == opcInHouse.rolID
+                                    || member.rolID == opcOutHouse.rolID);
+                            }//Edit mode
+                            if (csm == null) { csm = new TrialSalesMembers(); }
+
+                            <div class="sale_member_selector col-xs-6">
+                                <!--Role ID-->
+                                <div class="col-xs-4" id="OpcRolSelection" name="mytext[]">
+                                    @Html.DropDownList("SalesMemberTypes", new SelectList(new Object[]{
+                               new {rolID = opcInHouse.rolID, rolName = opcInHouse.type},
+                               new {rolID = opcOutHouse.rolID, rolName = opcOutHouse.type} },
+                                              "rolID", "rolName", csm.rolID), new { @class = "form-control OpcRolSelection", Name = "trialSalesMembers[0].rolID" })
+                                </div>
+
+                                <!--Member Selector-->
+                                <input type="hidden" name="trialSalesMembers[0].salesMemberID" id="SalesMembers" value="@csm.salesMemberID" />
+                                @if (ViewBag.modoPartialView == "modificar")
+                                 {<input type="hidden" name="trialSalesMembers[0].trialMembershipID" value="@Model.trialMembershipID" />}
+                                <div class="col-xs-8" id="InHouseSalesMembersSelection" name="mytext[]">
+                                    @Html.DropDownList("OPCSalesMembers1",
+                                    new SelectList(inHouseSalesMembers, "salesMemberID", "legalName", csm.salesMemberID),
+                              "Select a " + opcInHouse.type + " member...", new { @class = "form-control" })
+                                </div>
+                                <!--Member Selector-->
+                                <div class="col-xs-8" id="OutHouseSalesMembersSelection" name="mytext[]" style="display:none">
+                                    @Html.DropDownList("OPCSalesMembers2",
+                                    new SelectList(outHouseSalesMembers, "salesMemberID", "legalName", csm.salesMemberID),
+                                "Select a " + opcOutHouse.type + " Member...", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            csm = null;
+                        }
+
+
+                        foreach (Rol rol in mandatoryRoles)
+                        {
+                            //Determines sales member for current mandatory role, if it was selected, else dummy object is created to render selection panel
+                            if (Model != null) { csm = salesMembersInContract.FirstOrDefault(member => member.rolID == rol.rolID); }//Edit mode
+                            if (csm != null && csm.salesMemberID > 0) { selectedMember = csm.salesMember; }
+                            else { selectedMember = new SalesMember(); }//Dummy object
+
+                        <!--For each default rol in a sales contract, evey sales member qualified for that role is listed in a dropdown-->
+                            var qualifiedSalesMembers = from rolSalesMember in rol.rolSalesMembers
+                                                        select new
+                                                        {
+                                                            salesMemberID = rolSalesMember.salesMember.salesMemberID,
+                                                            legalName = rolSalesMember.salesMember.firtName + " " + rolSalesMember.salesMember.lastName
+                                                        };
+
+                                                        <div class="sale_member_selector col-xs-6">
+                                                            <!--Role ID-->
+                                                            <div class="col-xs-3" id="memberSelection" name="mytext[]">
+                                                                <label class="control-label">@rol.type</label>
+                                                                <!--Fixed role selection-->
+                                                                <input type="hidden" value="@rol.rolID" id="SalesMemberTypes" name=@("trialSalesMembers[" + contador + "].rolID") />
+                                                            @if (ViewBag.modoPartialView == "modificar")
+                                                            {<input type="hidden" value="@Model.trialMembershipID" name=@("trialSalesMembers[" + contador + "].trialMembershipID") />}
+                                                            </div>
+                                                            <!--Member Selector-->
+                                                            <div class="col-xs-9" id="rolSelection" name="mytext[]">
+                                                                @Html.DropDownList("SalesMembers", new SelectList(qualifiedSalesMembers, "salesMemberID", "legalName",
+                                                                selectedMember.salesMemberID), "Select Member...", new { @class = "form-control", Name = "trialSalesMembers[" + contador + "].salesMemberID" })
+                                                            </div>
+                                                        </div>
+                            contador++;
+                        }
+                    }
+
+                </fieldset>
+                @if (ViewBag.modoPartialView != "modificar")
+                {
+    <fieldset id="aditionalSalesMembersSelector" style="display: none;">
+        <legend>Aditional Sales Members</legend>
+        <button class="add_field_button btn btn-primary" type="button" id="add_field_button">Add Sales Member</button>
+        <!--Aditional members selector-->
+        @foreach (Rol rol in notMandatoryRoles)
+        {
+            //Determines sales member for current NOT mandatory role, if it was selected, else dummy object is created to render selection panel
+            if (Model != null) { csm = salesMembersInContract.FirstOrDefault(member => member.rolID == rol.rolID); }//Edit mode
+            if (csm != null) { selectedMember = csm.salesMember; }
+            else { selectedMember = new SalesMember(); }
+
+            if (selectedMember.salesMemberID != 0)
+            {
+                <div class="sale_member_selector row">
+                    <!--Member Selector-->
+                    <div class="col-xs-4" id="memberSelection" name="mytext[]">
+                        @Html.DropDownList("SalesMembers", new SelectList(allSalesMembers, "salesMemberID", "legalName", selectedMember.salesMemberID),
+                             "Select Member...", new { @class = "form-control" })
+                    </div>
+
+                    <!--Rol Selector-->
+                    <div class="col-xs-3" id="rolSelection" name="mytext[]">
+                        @{
+                var qualifiedRoles = from r in selectedMember.rolSalesMembers
+                                     select new { rolID = r.rolID, rolName = r.rol.type };
+                        }
+                        @Html.DropDownList("SalesMemberTypes", new SelectList(qualifiedRoles, "rolID", "rolName", rol.rolID),
+                                         "Select Rol", new { @class = "form-control" })
+                    </div>
+                    <a href="#" class="remove_field remove_field btn btn-default">Remove</a>
+                    <img id="loader_animation" src="~/Content/themes/base/images/loading.gif" alt="Loading..." style="display:none" />
+                </div>
+            }
+        }
+
+        <div class="sale_member_selector row">
+            <!--Member Selector-->
+            <div class="col-xs-4" id="memberSelection" name="mytext[]">
+                @Html.DropDownList("SalesMembers", new SelectList(allSalesMembers, "salesMemberID", "legalName"),
+                                         "Select Member...", new { @class = "form-control" })
+            </div>
+
+            <!--Rol Selector-->
+            <div class="col-xs-3" id="rolSelection" name="mytext[]">
+                @Html.DropDownList("SalesMemberTypes", new SelectList(new Object[0], "rolID", "rolName"),
+                                             "Select Rol", new { @class = "form-control" })
+            </div>
+            <a href="#" class="remove_field remove_field btn btn-default">Remove</a>
+            <img id="loader_animation" src="~/Content/themes/base/images/loading.gif" alt="Loading..." style="display:none" />
+        </div>
+    </fieldset>
+}
+            </div>
+        </div>
+    </div>
+</div>

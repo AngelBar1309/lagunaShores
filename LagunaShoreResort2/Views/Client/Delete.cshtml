@@ -1,0 +1,164 @@
+﻿@model LagunaShoreResort2.Models.Client
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Client</h4>
+    <hr />
+    <div class="tableDelete">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.firstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.firstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.middleName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.middleName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.lastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.lastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.legalName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.legalName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.emailAddress)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.emailAddress)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.primaryPhoneNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.primaryPhoneNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.primaryResidenceAddress)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.primaryResidenceAddress)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.secondFirstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.secondFirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.secondMiddleName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.secondMiddleName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.secondLastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.secondLastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.secondLegalName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.secondLegalName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.secondEmailAddress)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.secondEmailAddress)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.secondPhoneNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.secondPhoneNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.city)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.city)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.state)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.state)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.zipCode)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.zipCode)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.contractNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.contractNumber)
+            </dd>
+
+        </dl>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>

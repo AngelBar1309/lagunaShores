@@ -1,0 +1,140 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.Deposit>
+@using LagunaShoreResort2.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">Deposit</div>
+      
+       
+        @using (Html.BeginForm("Index", "Deposit", FormMethod.Get, new { @class = "panel-body filter hidden-print" }))
+        {
+
+           
+    <div class="col-xs-3">
+        <input type="text" id="buscadorContratos" name="buscadorContratos" class="form-control" value="" placeholder="Contract Number or Client Name" />
+    </div>
+    <div class="col-xs-3">    <input type="number" name="amountPaid" class="form-control" value="" placeholder="Payment Amount" /> </div>
+           
+    <div class="col-xs-3">    <input type="date" name="paymentDate" class="form-control" value="" placeholder="Payment Date" /></div>
+          
+            
+            <div class="col-xs-3">
+                <select onchange="((this.options[this.selectedIndex].value).Split('|')[0]) && ((window.location = (this.options[this.selectedIndex].value).Split('|')[0]));" class="form-control" @*style="width:160px"*@ name="DepositType" id="DepositType">
+                    <option value="Todos los depositos">All Deposits</option>
+                    <option value="No verificados">Deposits Unverified</option>
+                    <option value="Verificados">Verified Deposits</option>
+                </select>
+                <button name="buscadorClientes" class="btn btn-primary">Search</button>
+        </div>
+       
+
+        }
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.salesContract.contractType)
+                </th>
+                <th>
+                   @Html.DisplayNameFor(model => model.salesContract.contractNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.salesContract.client.legalName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DepositDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CurrencyType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExchangeRate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RefNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PayMethod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Refund)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.verification)
+                </th>
+                <th>Functions</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                var contractType = item.getContractType();
+                var contractNumber = item.getContractNumber();
+                var legalName = item.getContractLegalNameOwner();
+                <tr>
+                    <td>@contractType</td>
+                    <td>@contractNumber</td>
+                    <td>
+                        @legalName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepositDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CurrencyType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExchangeRate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RefNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PayMethod)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Refund)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.verification)
+                    </td>
+                    <td class="function-cell">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS))
+                                   {
+                                       if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER))
+                                       {
+                                           <li> @Html.ActionLink("Delete", "Delete", new { id = item.noFolio })</li> 
+                                       }
+                                <li> @Html.ActionLink("Edit", "Edit", new { id = item.noFolio, contractType = item.getContractType() })</li>
+                                    }
+                               
+                                <li>@Html.ActionLink("Details", "Details", new { id = item.noFolio, contractType = item.getContractType() }, new { data_modal = "" })</li>
+                                
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+<script src="~/Scripts/modalform.js"></script>

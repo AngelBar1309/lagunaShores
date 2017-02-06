@@ -1,0 +1,20 @@
+﻿@*Implementation of MVC CheckBoxList Extension http://mvccbl.com/#documentation*@
+@model LagunaShoreResort2.Models.ViewModels.VMMemberQualificationSelection
+@using HtmlListInfo = MvcCheckBoxList.Model.HtmlListInfo
+@using HtmlTag = MvcCheckBoxList.Model.HtmlTag
+@using TextLayout = MvcCheckBoxList.Model.TextLayout
+@using TemplateIsUsed = MvcCheckBoxList.Model.TemplateIsUsed
+
+@{
+    var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, 2, null, TextLayout.Default, TemplateIsUsed.Yes);
+}
+
+
+@Html.CheckBoxListFor(
+        model => model.postedMemberTypes.members,  // checkbox list name, 'PostedCities.CityIDs' in this case
+            model => model.availableMemberTypes,       // List<City>()
+            vmMemberQualificationSelection => vmMemberQualificationSelection.typeID,                    // City.Id
+            vmMemberQualificationSelection => vmMemberQualificationSelection.memberType,                  // City.Name
+            model => model.selectedMemberTypes, // List<city>() - should contain only cities to be selected
+        htmlListInfo
+)

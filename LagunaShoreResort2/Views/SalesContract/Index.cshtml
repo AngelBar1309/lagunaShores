@@ -1,0 +1,163 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.SalesContract>
+@using LagunaShoreResort2.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Fractional Contracts</div>
+        @using (Html.BeginForm("Index", "SalesContract", FormMethod.Get, new { @class = "panel-body filter hidden-print" }))
+        {
+        <div class="col-xs-8">
+            <input type="text" id="buscadorContratos" name="buscadorContratos" 
+                   class="form-control" value="" placeholder="Contract Number or Client Name" />
+        </div>
+        <div class="col-xs-3">
+            <select onchange="((this.options[this.selectedIndex].value).Split('|')[0]) && ((window.location = (this.options[this.selectedIndex].value).Split('|')[0]));" class="form-control" @*style="width:160px"*@ name="contractType" id="contractTypeID">
+                <option value="TodosLosContratos">All Fractional Contracts</option>
+                <option value="ContratosCancelados">Canceled Fractional Contracts</option>
+                <option value="ContratosNoVerificados">Unverified Fractional Contracts</option>
+            </select>
+        </div>
+            
+        <button name="buscadorClientes" class="btn btn-primary">Search</button>
+        } 
+    <!--Legend for colors code in report-->
+    <div class="panel">
+        <div class="legend">
+            <div class="legend-square downpayment-paid">  </div>
+            <div class="legend-label">Downpayment Paid</div>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.contractNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.client.legalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.client.secondLegalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.condo.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.typeOfFraction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractDate)
+            </th>
+
+            @if(!User.IsInRole(AccountRolesNames.ACCOUNTANT)){
+                <th>
+                    @Html.DisplayNameFor(model => model.verifiedByAdmin)
+                </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.requestToAccountant)
+            </th>
+            }
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.commissionPaid)
+            </th>
+            <th>Functions</th>
+        </tr>
+
+        @foreach (var item in Model.Where(sc => !sc.canceledContract).OrderByDescending(sc => sc.contractDate.Year).ThenByDescending(sc => sc.contractDate.Month))
+        {
+            Boolean downPaymentPaid = Deposit.isDownPaymentCompleted(item, null, null);
+            <tr class=@(downPaymentPaid ? "downpayment-paid" : "")>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contractNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.client.legalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.client.secondLegalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.condo.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.typeOfFraction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contractDate)
+                </td>
+                @if(!User.IsInRole(AccountRolesNames.ACCOUNTANT)){
+                <td>
+                    @Html.DisplayFor(modelItem => item.verifiedByAdmin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.requestToAccountant)
+                </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.commissionPaid)
+                </td>
+                <td class="function-cell">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.salesContractID }, new { data_modal = "" })</li>
+
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                if (!(User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && item.verifiedByAdmin == true))
+                                {
+                                    <li>@Html.ActionLink("Edit", "Edit", new { id = item.salesContractID }, new { data_modal = "" })</li>
+                                }
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)) {
+                            <li>@Html.ActionLink("Add Payment", "Create", "Deposit", new { id = item.salesContractID, contractType = item.contractType }, null)</li>
+                            <li>@Html.ActionLink("HOA Deposit", "Create", "Deposit", new { id = item.salesContractID, contractType = item.contractType, isHOA = true }, null)</li>
+                            }
+                            
+                            @if ((User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+        || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)) && item.deposits.Count > 0)
+                            {
+                                if (item.upgrade == true)
+                                {
+                                    <li>@Html.ActionLink("Download Contract", "DownloadUpgradeContractFile", "SalesContract", new { id = item.salesContractID }, null)</li>
+                                }
+                                else
+                                {
+                                    <li>@Html.ActionLink("Download Contract", "DownloadContractFile", "SalesContract", new { id = item.salesContractID }, null)</li>
+                                }
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                            <li>@Html.ActionLink("Upgrade", "Create", "SalesContract", new { id = item.clientID, sCID = item.salesContractID, tMID = 0}, null)</li>
+                            }
+                            
+                            @if (downPaymentPaid && (User.IsInRole(AccountRolesNames.ADMINISTRATOR) ||
+                                User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.VLO)
+                                || User.IsInRole(AccountRolesNames.ACCOUNTANT)))
+                            {
+                                <li>@Html.ActionLink("Commission Request", "RequestComission", new { id = item.salesContractID }, null)</li>
+                            }
+                            <li class="divider"></li>
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR)) { 
+                            <li>@Html.ActionLink("Delete", "Delete", new { id = item.salesContractID }, new { data_modal = "" })</li>
+                            }
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+    </div>

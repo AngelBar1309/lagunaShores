@@ -1,0 +1,13 @@
+﻿@model ICollection<LagunaShoreResort2.Models.ViewModels.VMCondo_CurrentClient>
+<select id="condoID" class="form-control">
+    @foreach (var condo in Model)
+    {
+        <option id="condoID"
+                value="@condo.condoID"
+                legalname1="@condo.legalName1"
+                legalname2="@condo.legalName2"
+                salescontractid="@condo.salesContractID">
+            @condo.condoName
+        </option>
+    }
+</select>

@@ -1,0 +1,52 @@
+﻿@model LagunaShoreResort2.Models.ContractSalesMember
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ContractSalesMember</h4>
+    <hr />
+    <div class="tableDelete">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.salesContract.contractNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.salesContract.contractNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.salesMember.legalName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.salesMember.legalName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.salesMemberType.type)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.salesMemberType.type)
+            </dd>
+
+        </dl>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>

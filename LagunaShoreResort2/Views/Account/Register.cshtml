@@ -1,0 +1,72 @@
+﻿@model LagunaShoreResort2.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Create a new account.</h4>
+        <div class="panel-body row">
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="dl-horizontal col-md-4">
+                @*<div class="dl-horizontal col-md-10 col-md-offset-1">*@
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                  
+                    <fieldset class="form-group">
+                        @Html.LabelFor(m => m.RoleName, new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("RoleName", null, "Select Rol", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.RoleName, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    </div>
+                    <div class="dl-horizontal col-md-4">
+                        <fieldset class="form-group">
+                            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", data_mask = "(000) 000-0000" } })
+                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </fieldset>
+                
+                        <fieldset class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                            <div class="col-md-12">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </fieldset>
+                        </div>
+                <div class="dl-horizontal col-md-4">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    </div>
+                </div>
+                <div class="panel-body row">
+                    <input type="submit" value="Create" class="btn btn-success btn-lg col-md-2 col-md-offset-5">
+                </div>
+            </div>
+    @*</div>*@
+}
+
+        @section Scripts {
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+            @Scripts.Render("~/bundles/jqueryval")
+        }

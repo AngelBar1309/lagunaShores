@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<publishData>
+    <publishProfile 
+      publishUrl="https://lsrdata-001-site2.ctempurl.com:8172/msdeploy.axd"
+      msdeploySite="lsrdata-001-site2"
+      destinationAppUrl="http://lsrdata-001-site2.ctempurl.com/"
+      profileName="Default Settings"
+      publishMethod="MSDeploy"
+      userName="ifc\lsrdata-001" />
+</publishData>
+<!--<publishData>
+  <publishProfile
+  publishUrl="https://lsrdata-001-site1.htempurl.com:8172/msdeploy.axd?site=lsrdata-001-site1"
+  msdeploySite="lsrdata-001-site1"
+  destinationAppUrl="http://lsrdata-001-site1.htempurl.com/"
+  profileName="Default Settings"
+  publishMethod="MSDeploy" userName="ifc\lsrdata-001"
+  AllowUntrustedCertificate="True"
+   />
+</publishData>
+-->

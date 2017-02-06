@@ -1,0 +1,71 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.ViewModels.VMHOAMontlhyFeeRow>
+
+<div id="panelDepositDetails" class="panel panel-info">
+    <div class="panel-heading">
+        HOA Fees @ViewBag.year
+    </div>
+    <div class="panel-body">
+        @if (Model.Where(d=>d.active).Count() > 0) { 
+        <table class="table-responsive table-striped col-xs-12">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.month)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.paidFee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.balance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.penalties)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.interest)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.totalOwing)
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                if (item.active) { 
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.month)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.paidFee)
+                    </td>
+                    <td class="@(item.balance<0?"td_alert":"")">
+                        @Html.DisplayFor(modelItem => item.balance)
+                    </td>
+                    <td class="@(item.penalties<0?"td_alert":"")">
+                        @Html.DisplayFor(modelItem => item.penalties)
+                    </td>
+                    <td class="@(item.interest<0?"td_alert":"")">
+                        @Html.DisplayFor(modelItem => item.interest)
+                    </td>
+                    <td class="@(Math.Round(item.totalOwing)<0?"td_alert":"")">
+                        @Html.DisplayFor(modelItem => item.totalOwing)
+                    </td>
+                </tr>
+                }
+            }
+
+        </table>
+        }else
+        {
+            <div class="alert-info">
+                This contract was not paying HOA this year.
+            </div>
+        }
+    </div>
+</div>

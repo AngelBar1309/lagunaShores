@@ -1,0 +1,219 @@
+﻿@model LagunaShoreResort2.Models.RealStateContract
+@using LagunaShoreResort2.Models
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.ActionLink("Details", "Details", new { id = Model.realStateContractID }) |
+    @Html.ActionLink("Back to List", "Index")
+    
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel-body form-horizontal">
+        <h4>RealStateContract</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.realStateContractID)
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.clientAssigned.legalName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.Hidden("clientAssignedID", Model.clientAssignedID)
+                        <input type="text" id="legalName" name="legalName" class="form-control" value="@(Model.clientAssigned.legalName)" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.clientAssigned.secondLegalName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <input type="text" id="sLegalName" name="sLegalName" class="form-control" value="@(Model.clientAssigned.secondLegalName) " readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.type, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.type, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.type, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MLS, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.MLS, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MLS, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ownershipHeld, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.ownershipHeld, new SelectList(RealStateContract.getOwnershipHeldTypes(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ownershipHeld, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.saleAmount, htmlAttributes: new { @class = "control-label2" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.saleAmount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.saleAmount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.currency, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.currency, new SelectList(SalesContract.getCurrencyArray(), "Value", "Text", "USD"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.currency, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.deposit, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.deposit, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.deposit, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NumberofDownPayments, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.NumberofDownPayments, new { htmlAttributes = new { @class = "form-control", data_mask = "00" } })
+                        @Html.ValidationMessageFor(model => model.NumberofDownPayments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.paymentsQuantity, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.paymentsQuantity, new SelectList(SalesContract.getPaymentsQuantitiesArray(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.paymentsQuantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.interestRate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.interestRate, new { htmlAttributes = new { @class = "form-control", data_mask = "00.00" } })
+                        @Html.ValidationMessageFor(model => model.interestRate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.saleDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.saleDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.saleDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.closingDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.closingDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.closingDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.closingCost, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.closingCost, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.closingCost, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.salesMemberID, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownList("salesMemberID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.salesMemberID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.clientAssignorID, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.Hidden("clientAssignorID", Model.clientAssignedID)
+                        <input value="@Model.clientAssignor.legalName" type="text" id="assignorLegalName" name="assignorLegalName" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.clientAssignorID, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.Hidden("clientAssignorID", Model.clientAssignedID)
+                        <input value="@Model.clientAssignor.secondLegalName" type="text" id="assignorLegalName2" name="assignorLegalName2" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.condoID, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @*Html.Partial("../Condo/Partial_Condo_Clientes_Dropdown", condos)*@
+                        @Html.DropDownList("condoID", null, "Select a condo...", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.condoID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InitialHOAMonth, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.InitialHOAMonth, new { htmlAttributes = new { @class = "form-control", type = "month" } })
+                        @Html.ValidationMessageFor(model => model.InitialHOAMonth, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HOAYearlyPayment, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.HOAYearlyPayment, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.HOAYearlyPayment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body row">
+            <input type="submit" value="Edit" class="btn btn-success btn-lg col-md-2 col-md-offset-5" />
+        </div>
+    </div>
+}
+@section scripts{
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+<script>
+        //Async request to server to get Owner's Legal Name of the Condo
+        $("#condoID").change(function () {
+            var condoID = $(this).children(":selected").val();
+            $("#assignorLegalName").val("Loading...");
+            $("#assignorLegalName2").val("Loading...");
+            $.ajax(
+                {
+                    url: "/Condo/CondoInfo",
+                    method: "GET",
+                    dataType: "JSON",
+                    data: { condoID: condoID },
+                    success : function (result) {
+                        var legalName = result.legalName1;
+                        var legalName2 = result.legalName2;
+                        var clientID = result.clientID;
+                        $("#assignorLegalName").val(legalName);
+                        $("#assignorLegalName2").val(legalName2);
+                        $("#clientAssignorID").val(clientID);
+                    },
+                    error : function () {
+                        $("#assignorLegalName").val("Error!");
+                        $("#assignorLegalName2").val("Error!");
+                        $("#clientAssignorID").val(clientID);
+                    }
+                }
+            );})
+</script>
+    }

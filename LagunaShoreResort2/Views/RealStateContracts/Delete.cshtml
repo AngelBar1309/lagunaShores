@@ -1,0 +1,105 @@
+﻿@model LagunaShoreResort2.Models.RealStateContract
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>RealStateContract</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.clientAssigned.firstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.clientAssigned.firstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.clientAssignor.firstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.clientAssignor.firstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.salesMember.firtName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.salesMember.firtName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MLS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MLS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ownershipHeld)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ownershipHeld)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.saleAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.saleAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.saleDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.saleDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.closingDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.closingDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.transfererName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.transfererName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

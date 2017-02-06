@@ -1,0 +1,780 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.ViewModels.VMSalesContract>
+@using LagunaShoreResort2.Models.ViewModels;
+@using LagunaShoreResort2.Models;
+@using CommissionPaymentStatus = LagunaShoreResort2.Models.ViewModels.VMFilterContractReport.CommissionPaymentStatus;
+@{
+    IEnumerable<VMTrialMemberships> salesMemberTrialMembershipsReport = ViewBag.query2;
+
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    VMFilterContractReport vmFilter = ViewBag.vmFilter;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Sales Contract Report</div>
+    <!-- Filter controls to prepare report -->
+    @Html.Partial("../Shared/Partials/Partial_ReportFilter", vmFilter)
+
+    <div class="panel-body ">
+        @if (Model == null)
+        {
+            <div class="alert alert-info">
+                Prepare the report using the filters.
+            </div>
+        }
+        else if (Model.Count() > 0)
+        {
+        <!-- Show current filters applied -->
+            <div class="panel row">
+                <div id="filters_applied_info" class="col-md-12">
+                    <div class="col-xs-1">
+                        Filters
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(filter => vmFilter.start)
+                        @Html.DisplayFor(filter => vmFilter.start, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(filter => vmFilter.end)
+                        @Html.DisplayFor(filter => vmFilter.end, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(filter => vmFilter.commissionPaymentStatus)
+                        @Html.DisplayFor(model => vmFilter.commissionPaymentStatus)
+                    </div>
+                    <br />
+                    <div class="col-xs-1">
+                        Totals:
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label("Total FC")
+                        @Model.Count()
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label("Canceled FC")
+                        @ViewBag.totalCanceled
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label("Total TM")
+                        @ViewBag.totalTM
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label("Canceled TM")
+                        @ViewBag.tTotalCanceledTM
+                    </div>
+
+                </div>
+            </div>
+
+        <!--Show summary data-->
+            if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+                || User.IsInRole(AccountRolesNames.CEO)
+                || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.OWNER_SERVICES)
+                || User.IsInRole(AccountRolesNames.SALES_MANAGER) || User.IsInRole(AccountRolesNames.CONCIERGE)
+                || User.IsInRole(AccountRolesNames.VLO)))
+            {
+                <div id="summary_report" class="panel panel-info">
+                    <div class="panel-heading">Summary of Fractional Contracts</div>
+                    <div class="panel-body">
+                        <div class="col-xs-3">
+                            <div>Type of Contracts </div>
+                            <div>Active</div>
+                            <div>Canceled</div>
+                            <div>Total</div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div>Total Sales Amount (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountFc)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountFcCanceled)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountFcTotal)</div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div>Total Paid Amout (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidFc)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidFcCanceled)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidFcTotal)</div>
+                        </div>
+                        @if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+        || User.IsInRole(AccountRolesNames.CEO) ||
+        User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)))
+                        {
+                            <div class="col-xs-3">
+                                <div>Total Owed Amout (USD)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountFc)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountFcCanceled)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountFcTotal)</div>
+                            </div>
+                            @*<div class="col-xs-3">
+                                <div>Total PMT</div>
+                                <div>$@String.Format("{0:n}", ViewBag.pmt)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.pmtc)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tPmt)</div>
+                            </div>*@
+                        }
+                    </div>
+                </div>
+            }
+
+             <!--Show summary data-->
+            if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+              || User.IsInRole(AccountRolesNames.CEO)
+              || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.OWNER_SERVICES)
+              || User.IsInRole(AccountRolesNames.SALES_MANAGER) || User.IsInRole(AccountRolesNames.CONCIERGE)
+              || User.IsInRole(AccountRolesNames.VLO)))
+            {
+                <div id="summary_report" class="panel panel-info">
+                    <div class="panel-heading">Summary of TrialMemberships Contracts</div>
+                    <div class="panel-body">
+                        <div class="col-xs-3">
+                            <div>Type of Contracts </div>
+                            <div>Active</div>
+                            <div>Canceled</div>
+                            <div>Total</div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div>Total Sales Amount (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountTm)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountTmCanceled)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountTmTotal)</div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div>Total Paid Amout (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidTm)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidTmCanceled)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidTmTotal)</div>
+                        </div>
+                        @if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+        || User.IsInRole(AccountRolesNames.CEO) ||
+        User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)))
+                        {
+                            <div class="col-xs-3">
+                                <div>Total Owed Amout (USD)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountTm)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountTmCanceled)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountTmTotal)</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+              || User.IsInRole(AccountRolesNames.CEO)
+              || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.OWNER_SERVICES)
+              || User.IsInRole(AccountRolesNames.SALES_MANAGER) || User.IsInRole(AccountRolesNames.CONCIERGE)
+              || User.IsInRole(AccountRolesNames.VLO)))
+            {
+            <!--Show summary data-->
+                <div id="summary_report" class="panel panel-info">
+                    <div class="panel-heading">Summary All Contract</div>
+                    <div class="panel-body">
+                        <div class="col-xs-3">
+                            <div>Type of Contracts</div>
+                            <div>Active Fractional Contracts</div>
+                            <div>Active TrialMemberships Contracts</div>
+                            <div>Total</div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div>Total Sales Amount (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountFc)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tSalesAmountTm)</div>
+                            <div>$@String.Format("{0:n}", (ViewBag.tSalesAmountFc + ViewBag.tSalesAmountTm))</div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div>Total Paid Amout (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidFc)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.tPaidTm)</div>
+                            <div>$@String.Format("{0:n}", (ViewBag.tPaidFc + ViewBag.tPaidTm))</div>
+                        </div>
+                        @if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+        || User.IsInRole(AccountRolesNames.CEO) ||
+        User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)))
+                        {
+                            <div class="col-xs-3">
+                                <div>Total Owed Amout (USD)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountFc)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tOwedAmountTm)</div>
+                                <div>$@String.Format("{0:n}", (ViewBag.tOwedAmountFc + ViewBag.tOwedAmountTm))</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+              || User.IsInRole(AccountRolesNames.CEO)
+              || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.OWNER_SERVICES)
+              || User.IsInRole(AccountRolesNames.SALES_MANAGER) || User.IsInRole(AccountRolesNames.CONCIERGE)
+              || User.IsInRole(AccountRolesNames.VLO)))
+            {
+            <!--Show summary data-->
+                if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+                    || User.IsInRole(AccountRolesNames.CEO) ||
+                    User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)))
+                {
+                    <div id="summary_report" class="panel panel-info">
+                        <div class="panel-heading">Summary by Interest Type FC</div>
+                        <div class="panel-body">
+                            <div class="col-xs-3">
+                                <div>Interest Rate</div>
+                                <div>0%</div>
+                                <div>5%</div>
+                                <div>5.9%</div>
+                                <div>6.9%</div>
+                                <div>7%</div>
+                                <div>8%</div>
+                                <div>9%</div>
+                                <div>10%</div>
+                                <div>11%</div>
+                                <div>12%</div>
+                                <div>12.1%</div>
+                                <div>12.7%</div>
+                                <div>14%</div>
+                                <div>14.9%</div>
+                                <div>17.9%</div>
+                                <div>18.9%</div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>Monthly Payment</div>
+                                <div>$@String.Format("{0:n}", ViewBag.zero)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.five)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fiveNine)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.sixNine)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.seven)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eight)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.nine)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.ten)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eleven)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelve)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twleveOne)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveSeven)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fourteen)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fourteenNine)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.seventeenNine)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightTeenNine)</div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <div>Contract Receivable</div>
+                                <div>$@String.Format("{0:n}", ViewBag.zeroSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fiveSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fiveNineSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.sixNineSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.sevenSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.nineSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tenSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.elevenSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twleveOneSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveSevenSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fourteenSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fourteenNineSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.seventeenNineSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightTeenNineSA)</div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>Balance</div>
+                                <div>$@String.Format("{0:n}", ViewBag.zeroB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fiveB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fiveNineB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.sixNineB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.sevenB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.nineB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.tenB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.elevenB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twleveOneB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveSevenB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fourteenB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.fourteenNineB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.seventeenNineB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightTeenNineB)</div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+                       || User.IsInRole(AccountRolesNames.CEO) ||
+                       User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)))
+                {
+                    <div id="summary_report" class="panel panel-info">
+                        <div class="panel-heading">Summary by Interest Type TM</div>
+                        <div class="panel-body">
+                            <div class="col-xs-3">
+                                <div>Interest Rate</div>
+                                <div>0%</div>
+                                <div>12.7%</div>
+                                <div>12.9%</div>
+                                <div>17.9%</div>
+                                <div>18.9%</div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>Monthly Payment</div>
+                                <div>$@String.Format("{0:n}", ViewBag.zeroC)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveSevenC)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelvenineC)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.seventeenNineC)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightTeenNineC)</div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <div>Contract Receivable</div>
+                                <div>$@String.Format("{0:n}", ViewBag.zeroCSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveSevenCSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelvenineCSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.seventeenNineCSA)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightTeenNineCSA)</div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>Balance</div>
+                                <div>$@String.Format("{0:n}", ViewBag.zeroCB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelveSevenCB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.twelvenineCB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.seventeenNineCB)</div>
+                                <div>$@String.Format("{0:n}", ViewBag.eightTeenNineCB)</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @*if (Request.IsAuthenticated && (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+                         || User.IsInRole(AccountRolesNames.CEO) ||
+                         User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)))
+                    {
+                        <div id="summary_report" class="panel panel-info">
+                            <div class="panel-heading">List Negative Contracts</div>
+                            <div class="panel-body">
+                                <div class="col-xs-12">
+                                    <div>Negative TM</div>
+                                    <div>$@String.Format("", ViewBag.negativeBalance)</div>
+                                </div>
+                            </div>
+                        </div>
+                    }*@
+            }
+
+        <!--Legend for colors code in report-->
+            <div class="panel">
+                <div class="legend">
+                    <div class="legend-square downpayment-paid">  </div>
+                    <div class="legend-label">Downpayment Paid</div>
+                </div>
+            </div>
+
+        <!--Show data from query-->
+            <div class="panel panel-success">
+                <div class="panel-heading">Fractional Contracts</div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.contractNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.typeOfFraction)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.contractDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.verifiedByAdmin)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.requestToAccountant)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.commissionPaid)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.canceledContract)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.totalPaid)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.balance)
+                            </th>
+                            @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                            {
+                                <th>
+                                    <strong>Client's State</strong>
+                                </th>
+                            }
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr class=@(item.downPaymentPaid?"downpayment-paid":"")>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.contractNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.typeOfFraction)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.contractDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.verifiedByAdmin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.requestToAccountant)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.commissionPaid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.canceledContract)
+                                </td>
+                                <td>
+                                    $@String.Format("{0:n}", item.totalPaid)
+                                </td>
+                                <td>
+                                    $@String.Format("{0:n}", item.balance)
+                                </td>
+                                @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.client.state)
+                                    </td>
+                                }
+                                <td class="function-cell">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>@Html.ActionLink("Details", "Details", "SalesContract", new { id = item.salesContractID }, new { data_modal = "" })</li>
+
+                                            @if ((User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+|| User.IsInRole(AccountRolesNames.VLO) || User.IsInRole(AccountRolesNames.ACCOUNTANT)) && item.requestToAccountant)
+                                            {
+                                                <li>@Html.ActionLink("Commission Request", "RequestComission", new { id = item.salesContractID }, null)</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                No Trial MemberShips contracts were found.
+            </div>
+        }
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">TrialMemberships Contracts</div>
+        <div class="panel-body">
+            @if (salesMemberTrialMembershipsReport != null && salesMemberTrialMembershipsReport.Count() > 0)
+            {<!--Show data from query-->
+
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>
+                            ContractNumber
+                        </th>
+                        <th>
+                            Type of Contract
+                        </th>
+                        <th>
+                            Contract Date
+                        </th>
+                        <th>
+                            Verified by Admin
+                        </th>
+                        <th>
+                            Request to Accountant
+                        </th>
+
+                        <th>
+                            Commission Paid
+                        </th>
+                        <th> Canceled Contract</th>
+                        <th>
+                            Total Paid
+                        </th>
+                        <th>
+                            Balance
+                        </th>
+                        @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                        {
+                            <th>
+                                <strong>Client's State</strong>
+                            </th>
+                        }
+                    </tr>
+
+                    @foreach (var item in salesMemberTrialMembershipsReport)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.contractNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.typeOfContract)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.contractDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tmVerifiedByAdmin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.requestToAccountant)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.commissionPaid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.canceledContract)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.totalPaid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.balance)
+                            </td>
+                            @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.client.state)
+                                </td>
+                            }
+                            <td class="function-cell">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>@Html.ActionLink("Details", "Details", "TrialMemberships", new { id = item.trialMembershipID }, new { data_modal = "" })</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    No contracts were found.
+                </div>
+            }
+        </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">Fractional Contracts - Negative Balance</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.contractNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.typeOfFraction)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.contractDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.verifiedByAdmin)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.requestToAccountant)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.commissionPaid)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.canceledContract)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.totalPaid)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.balance)
+                    </th>
+                    @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                    {
+                        <th>
+                            <strong>Client's State</strong>
+                        </th>
+                    }
+                </tr>
+                @if(Model != null)
+                {
+                    IEnumerable <VMSalesContract>negativesBalance = Model.Where(item => item.balance < 0);
+                    
+                    foreach (var item in negativesBalance)
+                    {
+                        <tr class=@(item.downPaymentPaid?"downpayment-paid":"")>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.contractNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.typeOfFraction)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.contractDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.verifiedByAdmin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.requestToAccountant)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.commissionPaid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.canceledContract)
+                            </td>
+                            <td>
+                                $@String.Format("{0:n}", item.totalPaid)
+                            </td>
+                            <td>
+                                $@String.Format("{0:n}", item.balance)
+                            </td>
+                            @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.client.state)
+                                </td>
+                            }
+                            <td class="function-cell">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>@Html.ActionLink("Details", "Details", "SalesContract", new { id = item.salesContractID }, new { data_modal = "" })</li>
+
+                                        @if ((User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+|| User.IsInRole(AccountRolesNames.VLO) || User.IsInRole(AccountRolesNames.ACCOUNTANT)) && item.requestToAccountant)
+                                        {
+                                            <li>@Html.ActionLink("Commission Request", "RequestComission", new { id = item.salesContractID }, null)</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+</table>
+        </div>
+    </div>
+</div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">TrialMemberships Contracts-Negative Balance</div>
+        <div class="panel-body">
+            @if (salesMemberTrialMembershipsReport != null && salesMemberTrialMembershipsReport.Count() > 0)
+            {<!--Show data from query-->
+
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>
+                            ContractNumber
+                        </th>
+                        <th>
+                            Type of Contract
+                        </th>
+                        <th>
+                            Contract Date
+                        </th>
+                        <th>
+                            Verified by Admin
+                        </th>
+                        <th>
+                            Request to Accountant
+                        </th>
+
+                        <th>
+                            Commission Paid
+                        </th>
+                        <th> Canceled Contract</th>
+                        <th>
+                            Total Paid
+                        </th>
+                        <th>
+                            Balance
+                        </th>
+                        @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                        {
+                            <th>
+                                <strong>Client's State</strong>
+                            </th>
+                        }
+                    </tr>
+                    @if(salesMemberTrialMembershipsReport != null)
+                    {
+                        IEnumerable <VMTrialMemberships> negatives = salesMemberTrialMembershipsReport.Where(item => item.balance < 0);
+                        
+                        foreach (var item in negatives)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.contractNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.typeOfContract)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.contractDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.tmVerifiedByAdmin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.requestToAccountant)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.commissionPaid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.canceledContract)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.totalPaid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.balance)
+                                </td>
+                                @if ((User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)))
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.client.state)
+                                    </td>
+                                }
+                                <td class="function-cell">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>@Html.ActionLink("Details", "Details", "TrialMemberships", new { id = item.trialMembershipID }, new { data_modal = "" })</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                No contracts were found.
+            </div>
+        }
+    </div>
+</div>

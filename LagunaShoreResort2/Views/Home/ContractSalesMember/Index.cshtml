@@ -1,0 +1,74 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.ContractSalesMember>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">ContractSalesMember</div>
+
+    <div class="panel-body ">
+        @Html.ActionLink("Add", "Create", "ContractSalesMember", null, new { data_modal = "", id = "btnCreate", @class = "btn btn-small btn-primary pull-right" })
+    </div>
+    @*<h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.salesContract.contractNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.salesMember.legalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.salesMemberType.type)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.salesContract.contractNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.salesMember.legalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.salesMemberType.type)
+                </td>
+                <td style="width:10px">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.contractSalesMemberID }, new { data_modal = "" })</li>
+                            <li>@Html.ActionLink("Edit", "Edit", new { id = item.contractSalesMemberID }, new { data_modal = "" })</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Delete", "Delete", new { id = item.contractSalesMemberID }, new { data_modal = "" })</li>
+
+                        </ul>
+                    </div>
+</tr>
+        }
+
+    </table>
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modalform")
+}

@@ -1,0 +1,176 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.ViewModels.VMRealState>
+@using LagunaShoreResort2.Models.ViewModels;
+@using LagunaShoreResort2.Models;
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    VMFilterContractReport vmFilter = ViewBag.vmFilter;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Real States Report</div>
+    <!-- Filter controls to prepare report -->
+    @Html.Partial("../Shared/Partials/Partial_ReportFilter", vmFilter)
+
+    <div class="panel-body ">
+        @if (Model == null)
+        {
+            <div class="alert alert-info">
+                Prepare the report using the filters.
+            </div>
+        }
+        else if (Model.Count() > 0)
+        {
+        <!-- Show current filters applied -->
+            <div class="panel row">
+                <div id="filters_applied_info" class="col-md-12">
+                    <div class="col-xs-1">
+                        Filters
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.LabelFor(filter => vmFilter.start)
+                        @Html.DisplayFor(filter => vmFilter.start, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.LabelFor(filter => vmFilter.end)
+                        @Html.DisplayFor(filter => vmFilter.end, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.LabelFor(filter => vmFilter.commissionPaymentStatus)
+                        @Html.DisplayFor(model => vmFilter.commissionPaymentStatus)
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label("Results")
+                        @Model.Count()
+                    </div>
+                </div>
+            </div>
+        <!--Show summary data-->
+            <div id="summary_report" class="panel panel-info">
+                <div class="panel-heading">Summary of Active Contracts</div>
+                <div class="panel-body">
+                    <div class="col-xs-4">
+                        <div>Total Sales Amount (USD)</div>
+                        <div>$@String.Format("{0:n}", ViewBag.totalSalesAmount)</div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div>Total Paid Amout (USD)</div>
+                        <div>$@String.Format("{0:n}", ViewBag.totalPaid)</div>
+                    </div>
+                    @if (Request.IsAuthenticated && (User.IsInRole("Administrador") ||
+                    User.IsInRole("CEO") || User.IsInRole("ContractManager")))
+                    {
+                        <div class="col-xs-4">
+                            <div>Total Owed Amout (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.totalOwedAmount)</div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <!--Show summary data-->
+            <div id="summary_report" class="panel panel-info">
+                <div class="panel-heading">Summary of Canceled Contracts</div>
+                <div class="panel-body">
+                    <div class="col-xs-4">
+                        <div>Total Sales Amount (USD)</div>
+                        <div>$@String.Format("{0:n}", ViewBag.totalSalesAmountCanceled)</div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div>Total Paid Amout (USD)</div>
+                        <div>$@String.Format("{0:n}", ViewBag.totalPaidCanceled)</div>
+                    </div>
+                    @*<div class="col-xs-2">
+                            @Html.Label("# of Canceled Contract")
+                            <div>ViewBag.totalCanceledCount</div>
+                        </div>*@
+                    @if (Request.IsAuthenticated && (User.IsInRole("Administrador") ||
+                    User.IsInRole("CEO") || User.IsInRole("ContractManager")))
+                    {
+                        <div class="col-xs-4">
+                            <div>Total Owed Amout (USD)</div>
+                            <div>$@String.Format("{0:n}", ViewBag.totalOwedAmountCanceled)</div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <!--Legend for colors code in report-->
+            <div class="panel">
+                <div class="legend">
+                    <div class="legend-square downpayment-paid">  </div>
+                    <div class="legend-label">Not Verified</div>
+                </div>
+            </div>
+        <!--Show data from query-->
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.realStateID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.contractDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.verifiedByAdmin)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.requestToAccountant)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.commissionPaid)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.totalPaid)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.balance)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr class=@(item.downPaymentPaid?"downpayment-paid":"")>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.realStateID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.contractDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.verifiedByAdmin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.requestToAccountant)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.commissionPaid)
+                        </td>
+                        <td>
+                            $@String.Format("{0:n}", item.totalPaid)
+                        </td>
+                        <td>
+                            $@String.Format("{0:n}", item.balance)
+                        </td>
+                        <td class="function-cell">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("Details", "Details", "RealStateContracts", new { id = item.realStateID }, new { data_modal = "" })</li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                No contracts were found.
+            </div>
+        }
+    </div>
+</div>

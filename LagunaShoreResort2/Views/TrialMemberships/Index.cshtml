@@ -1,0 +1,152 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.TrialMemberships>
+@using LagunaShoreResort2.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<div class="panel panel-primary">
+    <div class="panel-heading">Trial Memberships</div>
+    @using (Html.BeginForm("Index", "TrialMemberships", FormMethod.Get, new { @class = "panel-body filter" }))
+    {
+    <div class="col-xs-8">
+        <input type="text" id="buscadorContratos" name="buscadorContratos" class="form-control" value="" placeholder="Contract Number or Client Name" />
+    </div> 
+    <div class="col-xs-3">
+        <select onchange="((this.options[this.selectedIndex].value).Split('|')[0]) && ((window.location = (this.options[this.selectedIndex].value).Split('|')[0]));" class="form-control" @*style="width:160px"*@ name="contractType" id="contractTypeID">
+            <option value="TodosLosContratos">All TrialMemberShips Contracts</option>
+            <option value="ContratosCancelados">Canceled TrialMemberShips</option>
+            <option value="ContratosNoVerificados">Unverified TrialMemberShips</option>
+        </select>
+    </div>
+        
+    <button name="buscadorClientes" class="btn btn-primary">Search</button>
+    }
+    <!--Legend for colors code in report-->
+    <div class="panel">
+        <div class="legend">
+            <div class="legend-square downpayment-paid">  </div>
+            <div class="legend-label">Downpayment Paid</div>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.contractNumberTM)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.client.legalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.client.secondLegalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tmContractDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tmVerifiedByAdmin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tmRequestToAccountat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tmCanceledContract)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tmCurrency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tmCommissionPaid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tmRoomType)
+            </th>
+            <th>Funtions</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            //isDownPaymentCompleted
+            Boolean downPaymentPaid = Deposit.isDownPaymentCompleted(null, item, null);
+            <tr class=@(downPaymentPaid ? "downpayment-paid" : "")>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contractNumberTM)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.client.legalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.client.secondLegalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tmContractDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tmVerifiedByAdmin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tmRequestToAccountat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tmCanceledContract)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tmCurrency)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tmCommissionPaid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tmRoomType)
+                </td>
+                <td class="function-cell">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                            || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && item.tmVerifiedByAdmin == true)
+                                { }
+                                else
+                                {
+                                    <li>@Html.ActionLink("Edit", "Edit", new { id = item.trialMembershipID })</li>
+
+                                }
+                            }
+                            <li> @Html.ActionLink("Details", "Details", new { id = item.trialMembershipID }) </li>
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                            || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                <li>@Html.ActionLink("Add Payment", "Create", "Deposit", new { id = item.trialMembershipID, contractType = item.contractType }, null)</li>
+                            }
+                            @if (downPaymentPaid && (User.IsInRole(AccountRolesNames.ADMINISTRATOR) ||
+                            User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.VLO)
+                            || User.IsInRole(AccountRolesNames.ACCOUNTANT)))
+                            {
+                                <li>@Html.ActionLink("Commission Request", "RequestComission", new { id = item.trialMembershipID }, null)</li>
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                <li>@Html.ActionLink("Upgrade", "Create", "SalesContract", new { id = item.clientID, sCID = 0, tMID = item.trialMembershipID }, null)</li>
+                            }
+                            <li class="divider"></li>
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                            {
+                                <li>@Html.ActionLink("Delete", "Delete", new { id = item.trialMembershipID })</li>
+                            }
+                        </ul>
+                    </div>
+                </td>
+                    </tr>
+                  }
+
+            </table>  
+        </div>

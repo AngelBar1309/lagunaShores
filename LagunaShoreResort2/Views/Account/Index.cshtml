@@ -1,0 +1,50 @@
+﻿@*model IEnumerable<LagunaShoreResort2.Models.ApplicationUser>*@
+@model IEnumerable<LagunaShoreResort2.Models.RegisterViewModel>
+@using LagunaShoreResort2.Controllers;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Register new user", "Register")
+</p>
+<div class="panel panel-primary">
+    <div class="panel-heading">System Users</div>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @*Html.ActionLink("Edit", "Edit", new { userID = item.Id })*@
+                    @*Html.ActionLink("Reset Password", "ResetPassword", new { userID = item.Id }) |*@
+                    @Html.ActionLink("Delete", "Delete", new { userID = item.registeredUserID })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

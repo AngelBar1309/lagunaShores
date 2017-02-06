@@ -1,0 +1,175 @@
+﻿@model LagunaShoreResort2.Models.RealStateContract
+@using LagunaShoreResort2.Models
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>@if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                        || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+    {
+        if (!(User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && Model.verifiedByAdmin == true))
+        {
+            @Html.ActionLink("Edit Contract", "Edit", new { id = Model.realStateContractID }) @(" |")
+        }
+    }
+    @Html.ActionLink("Client Details", "Details", "Client", new { id = Model.clientAssigned.clientID }, null) | 
+    @Html.ActionLink("HOA Deposits List", "listHOADeposits", "Deposit", new { id = Model.realStateContractID, contractType =Deposit.ContractTypes.RS}, null)
+</p>
+<h1>Real State Contract Details</h1>
+<div>
+    <div id="details" class="panel panel-info">
+        <div class="panel-heading">@ViewBag.Title</div>
+        <div class="panel-body row">
+            <dl class="dl-horizontal col-xs-6">
+                <dt>
+                    @Html.DisplayNameFor(model => model.clientAssigned.firstName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.clientAssigned.firstName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.clientAssignor.firstName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.clientAssignor.firstName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.salesMember.firtName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.salesMember.firtName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.type)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.type)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.MLS)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.MLS)
+                </dd>
+            </dl>
+            <dl class="dl-horizontal col-xs-6">
+                <dt>
+                    Total Paid
+                </dt>
+
+                <dd>
+                    $@String.Format("{0:n}", Deposit.getTotalPaid(null, null, Model))
+                </dd>
+                <dt>
+                    Current Balance
+                </dt>
+                <dd>
+                    $@String.Format("{0:n}", Deposit.getCurrentBalance(null, null,Model))
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.ownershipHeld)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ownershipHeld)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.saleAmount)
+                </dt>
+
+                <dd>
+                    $@Html.DisplayFor(model => model.saleAmount)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.saleDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.saleDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.closingDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.closingDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.InitialHOAMonth)
+                </dt>
+
+                <dd>
+                    @Model.InitialHOAMonth.ToString("MMMM yyyy")
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div id="panelDepositDetails" class="panel panel-info">
+    <div class="panel-heading">Amortization Schedule</div>
+    <div class="panel-body">
+        <table class="table-responsive table-striped col-xs-12">
+            <tr>
+                <th>No.</th>
+                <th>Date To Pay</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Remaining Principal</th>
+                <th>Remaining Interest</th>
+                <th>Deposit</th>
+                <th>Balance</th>
+                <th>No. Folio</th>
+                <th>Ref. Number</th>
+                <th>Payment Type</th>
+            </tr>
+            @foreach (PaymentDeposits pd in ViewBag.payments)
+            {
+                <tr>
+                    <td>@pd.payment.paymentNumber</td>
+                    <td>@pd.payment.dateToPay.ToShortDateString()</td>
+                    <td>@String.Format("{0:n}", pd.payment.Amortization)</td>
+                    <td>@String.Format("{0:n}", pd.payment.Interest)</td>
+                    <td>@String.Format("{0:n}", pd.remainingAmortization)</td>
+                    <td>@String.Format("{0:n}", pd.remainingInterest)</td>
+                    <td>@String.Format("{0:n}", pd.deposit.getAmountInContractCurrency(Model.currency))</td>
+                    <td>@String.Format("{0:n}", pd.balance)</td>
+                    <td>
+                        @if (pd.deposit.noFolio == 0)
+                        {
+                            @Html.Raw("--");
+                        }
+                        else
+                        {
+                            @pd.deposit.noFolio
+                        }
+                    </td>
+                    <td>@pd.deposit.RefNumber</td>
+                    <td>@pd.payment.paymentType</td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>
+@{
+    ViewBag.contractID = Model.realStateContractID;
+    ViewBag.contractType = "RS";
+    var deposits = Model.deposits.Where(dep => !dep.Refund).OrderBy(dep => dep.DepositDate);
+    @Html.Partial("../Deposit/Partial_Generic_DepositList", deposits);
+}

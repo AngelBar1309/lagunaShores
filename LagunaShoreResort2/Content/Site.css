@@ -1,0 +1,479 @@
+﻿*{transition:none!important}
+body {
+	/*padding-top: 100px;
+	padding-bottom: 20px;*/
+	/*background-color: #FFFFBF;*/
+	background-repeat: no-repeat;
+	height: 100%;
+	width: 100%;
+	/*margin-left: 0px;*/
+	/*background-image: url("/Imagenes/difuminado.png");*/
+	background-size: cover;
+	margin: 0;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+	padding-left: 15px;
+	padding-right: 15px;
+
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+	white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+	max-width: 280px;
+}*/
+li {
+	font-size: 15px;
+	font-family: 'Berlin Sans FB';
+}
+/*table, table td, table tr {
+	padding: 0px;
+	margin: 0px;
+	border-spacing: 0px;
+}*/
+.navbar-header{
+	padding: 0;
+	margin: 0;
+	color: white;
+}
+
+.navbar.navbar-inverse.navbar-fixed-top {
+	padding:0px 0px;
+	margin: 0px 0px;
+	   background-image:url('/Imagenes/lagunaShoreRecorteDegradado.jpg') ;
+   background-size:100% 100%;
+  background-repeat:no-repeat;
+	box-shadow: 10px 10px 5px #888888;
+  color:white;
+}
+.container.body-content {
+padding: 100px 0px 0px 0px;
+
+}
+.jumbotron {
+   padding: 0px 0px 0px 0px;
+   margin: 0px 0px 0px 0px;
+   text-align: center;
+   opacity:0.4;
+}
+
+.form-horizontal{
+	border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+		font: 12px Arial, Helvetica, sans-serif;
+	color: #666;
+		width: 100%;
+	margin: auto;
+	background-color:#F5F5F5;
+}
+.dl-horizontal{
+	  border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+		font: 12px Arial, Helvetica, sans-serif;
+	color: #666;
+		width: 100%;
+	margin: auto;
+	/*background-color:#F5F5F5;*/
+}
+.form-horizontal h4{
+		font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+	padding: 20px 0px 20px 40px;
+	display: block;    
+	color: #FFF;
+	background: rgb(24, 115, 171);
+	text-shadow: 1px 1px 1px #949494;
+	border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-bottom:1px solid #89AF4C;
+			width: 100%;
+			text-align: center;
+}
+form.btn.btn-link {
+	margin: 0;
+	padding: 0;
+}
+.buttonSave{
+		background-color: rgb(24, 115, 171);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-border-radius: 5px;
+	border: none;
+	padding: 10px 25px 10px 25px;
+	color: #FFF;
+	text-shadow: 1px 1px 1px #949494;
+	margin-left: 38%;
+	margin-bottom: 10px;
+}
+.selectimput{
+	background: url('down-arrow.png') no-repeat right, -moz-linear-gradient(top, #FBFBFB 0%, #E9E9E9 100%);
+	background: url('down-arrow.png') no-repeat right, -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FBFBFB), color-stop(100%,#E9E9E9));
+	-webkit-appearance:none; 
+   -moz-appearance: none;
+	text-indent: 0.01px;
+	width:100%;
+	height:30px;
+
+}
+
+.form-control{
+   background-color: #CCCCCC;
+}
+.nav .navbar-nav >li >a{
+	color: white;
+}
+
+ul.nav.navbar-nav div {
+	display: inline-block;
+	padding: 10px 10px 0;
+}
+/*
+.tableCreate{
+	width: 100%;
+	 margin: 20px 20px 20px 25px;
+	 padding: 0px 1px 20px 0px;
+	-webkit-column-count: 3;
+	-moz-column-count: 3;
+	column-count: 3;
+}*/
+.tableEdit{
+	width: 100%;
+	 margin: 20px 20px 19px 20px;
+	-webkit-column-count: 3;
+	-moz-column-count: 3;
+	column-count: 3;
+}
+.tableDelete{
+	width: 100%;
+	 margin: 20px 20px 19px 20px;
+	-webkit-column-count: 3;
+	-moz-column-count: 3;
+	column-count: 3;
+}
+/*
+.col-md-offset-2 col-md-10{
+	right: 150px;
+}*/
+.form-group{
+	right: 100%;
+}
+
+.navbar-inverse .navbar-brand {
+	color: white;
+}
+
+/*//////////////////////////////////////////////////*/
+
+.navbar-inverse .navbar-brand {
+  color: white;
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  color: #f2dede ;
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-text {
+  color: #f2dede
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color:  white;
+}
+
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #f2dede;
+  background-color: transparent;
+}
+
+footer{
+	padding: 0 1em;
+}
+/*//////////////////////////////////////////////////////////////////////////////////*/
+h1,
+h2,
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left: 20%;
+}
+/*input, select, textarea {
+	max-width: 250px;
+}*/
+
+.texboxBuscador{
+	
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #555555;
+	background-color: #C8C9D0;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+	margin-left: 10px;
+	margin-top: 30px;
+}
+.buscadorClientes{
+	color: #FFFFFF;
+	background-color:#428bca;
+	border-color: #285e8e;
+text-decoration: none;
+font-size: 14px;
+	font-weight: normal;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	white-space: nowrap;
+	
+}
+
+.buscadorClientes:hover,buscadorClientes:focus{
+	text-decoration: none;
+	background-color: #1A5F9C;
+}
+
+div.panelPay panel-primary{
+	margin: 0;
+	padding: 0;
+	margin-left: 80px;
+	width: 50%;
+	
+}
+.container{
+	padding: 0px;
+	width: 100%;
+	margin: 0 0 0 250px;
+	height: 0px;
+}
+
+table#depositsPaymentsTable {
+	width: 100%;
+}
+
+table tr:hover {
+	background: antiquewhite !important;
+
+
+}
+	
+td:before { 
+	/* Now like a table header */
+	position: absolute;
+	/* Top/left values mimic padding */
+	top: 6px;
+	left: 6px;
+	width: 45%; 
+	padding-right: 10px; 
+	white-space: nowrap;
+}
+td.function-cell{
+	width:10px;
+	text-align:center;
+}
+
+.panel-body form{
+	display: inline-block;
+}
+
+.panel.panel-primary{
+	border: 1px solid #3498db;
+}
+
+.panel.panel-info{
+	border: 1px solid #00afd1;
+}
+
+.panel-primary > .panel-heading{
+	font-size: 1.5em;
+}
+
+.panel-info > .panel-heading{
+	font-size: 1.3em;
+}
+
+
+.function-cell .dropdown-menu {
+	left:-130px !important;
+}
+
+section#loginForm {
+	float: none;
+	margin: auto;
+}
+
+.form-horizontal .form-group label+div {
+	font-size: 1.5em;
+}
+
+.form-group{
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+fieldset.form-group {
+	min-height: 60px;
+	margin-bottom: 5px;
+}
+
+.form-horizontal .form-group input/*:not(input[type=submit])*/, .form-horizontal .form-group select,
+.form-horizontal .form-group textarea{
+	max-width: none;
+}
+
+.form-horizontal .form-group label,
+.form-horizontal .form-group legend {
+	font-size: 1.3em;
+	font-weight: bold;
+}
+
+fieldset.form-group div {
+	padding: 0;
+}
+
+/*CUSTOMIZED CSS*/
+.sale_member_selector{
+	padding: .5em 0;
+}
+
+#panelSalesMembersList .input_fields_wrap{
+	padding: 0 1em;
+}
+
+#panelSalesMembersList fieldset{
+	margin: 10px 0;
+}
+.sale_member_selector select{
+	margin-right: 1em;
+}
+
+section.main-content {
+	min-height: 600px;
+}
+
+form.filter button{
+	float: right;
+}
+
+td input.check-box {
+	display: block;
+	margin: auto;
+}
+
+#filters_applied_info{
+	border:1px solid lightgray;
+	padding:0;
+}
+
+#filters_applied_info div:first-child{
+	background-color:lightgray;
+}
+
+#filters_applied_info label{
+	margin:0;
+}
+
+#summary_report .panel-body div div:first-child{
+	font-weight:bold;
+}
+
+#details dl{
+	font-size:1.2em;
+}
+
+.downpayment-paid{
+	background-color: #DAFFED;
+}
+
+.legend{
+	display: inline-block;
+	border-right: 1px solid #d1d2d3;
+	padding-right: 1em;
+}
+
+.legend div {
+	vertical-align: middle;
+	height: 2em;
+	margin: 0;
+	padding: 0;
+}
+
+.legend-square{
+	display: inline-block;
+	width: 2em;
+}
+
+.legend-label {
+	display: inline;
+}
+
+.row_canceled_reg, tr.row_canceled_reg td{
+    background-color:#DDD;
+}
+.td_alert{
+    color: red !important;
+}
+
+tr.downpayment-paid:hover{
+	background-color: #9EFFCE !important;
+}
+
+img#loader_animation{
+	height: 35px;
+}
+
+div#profile_information {
+	font-family: "PT Sans", sans-serif;
+}
+
+div#requestCommissionSignatures div{
+	border-top : 2px solid black;
+	text-align: center;
+	margin: 0 1.6em;
+	margin-top: 30px;
+}
+div#requestCommissionSignatures h4{
+	text-align: center;
+}
+
+textarea#comments {
+	width: 100%;
+}
+
+form.pull-right .btn {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+/************/
+
+/*CSS FOR PRINTING REPORTS AND DOCUMENTS*/
+@media print {
+	nav, aside{
+		display: none;
+	}
+	.wrapper > section{
+		margin-left:0px !important;
+	}
+	td.function-cell{
+		display:none !important;
+	}
+}

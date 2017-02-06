@@ -1,0 +1,103 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.Client>
+@using LagunaShoreResort2.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Clients</div>
+    <div class="panel-body ">
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { @class="col-md-10"}))
+        {
+            <div class="col-md-6">
+                <input type="text" name="buscadorCliente" class="form-control col-md-12" placeholder="Client Name" />
+            </div>
+            <div class="col-md-5">
+                <button name="" class="btn btn-primary">Search</button>
+            </div>
+        }
+         @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)) { 
+            @Html.ActionLink("Add", "Create", "Client", null, new { data_modal = "", id = "btnCreate", @class = "btn btn-small btn-primary pull-right" })
+         }
+    </div>
+   
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.legalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.secondLegalName)
+            </th>
+            <th>Functions</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.legalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.secondLegalName)
+                </td>
+                <td class="function-cell">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS) || User.IsInRole(AccountRolesNames.CEO) || User.IsInRole(AccountRolesNames.VLO))
+                            {
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.clientID }, new { data_modal = "" })</li>
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER))
+                            {
+                            <li>@Html.ActionLink("Edit", "Edit", new { id = item.clientID }, new { data_modal = "" })</li>
+                            }
+                            <li class="divider"></li>
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                            <li>@Html.ActionLink("Create New Fractional Contract", "Create", "SalesContract", new { id = item.clientID }, null)</li>
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                <li>@Html.ActionLink("Create New Trial Membreship", "Create", "TrialMemberships", new { id = item.clientID }, null)</li>
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                <li>@Html.ActionLink("Create New RealState Contract", "Create", "RealStateContracts", new { id = item.clientID }, null)</li>
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                              <li>@Html.ActionLink("Upgrade", "CreateUpgrade", "SalesContract", new { id = item.clientID }, null)</li>
+                            }
+                            @*<li class="divider"></li>
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS) || User.IsInRole(AccountRolesNames.CEO) || User.IsInRole(AccountRolesNames.VLO))
+                            { 
+                            <li>@Html.ActionLink("List Contracts", "Index", "SalesContract", new { clientID = item.clientID }, null)</li>
+                            }*@
+                        </ul>
+                     </div>                      
+                </td>
+            </tr>
+        }
+
+    </table>
+       
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/modalform")*@
+}
+@*<script src="~/Scripts/modalform.js"></script>*@

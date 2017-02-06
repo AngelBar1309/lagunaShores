@@ -1,0 +1,353 @@
+﻿@model LagunaShoreResort2.Models.TrialMemberships
+@using LagunaShoreResort2.Models
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Trial Membership</h4>
+        <hr />
+        <div class="panel-body row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="dl-horizontal col-md-4">
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.client.legalName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <input type="hidden" id="clientID" name="clientID" class="form-control" value="@(ViewBag.clientID) " />
+                        <input type="text" id="legalName" name="legalName" class="form-control" value="@(ViewBag.legalName)" readonly />
+                        @*@Html.ValidationMessageFor(model => model.contractType, "", new { @class = "text-danger" })*@
+                    </div>
+                </fieldset>
+                @*<fieldset class="form-group">
+                    @Html.LabelFor(model => model.client.secondLegalName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <input type="text" id="sLegalName" name="sLegalName" class="form-control" value="@(ViewBag.sLegalName) " readonly />
+                       
+                    </div>
+                </fieldset>*@
+                @*<fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmPaymentsQuantity, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmPaymentsQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmPaymentsQuantity, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>*@
+                @*<fieldset class="form-group">
+                    <label class="control-label" for="ContractType">Contract Type</label>
+                    <div class="col-md-12">
+                        <select class="form-control text-box single-line" name="contractType" id="contractTypeID">
+                            <option value="TM">Trial Membership</option>
+                            <option value="SA">Stand Alone</option>
+                            <option value="TSA">Trial Membership w/ Stand Alone</option>
+                        </select>
+                    </div>
+                </fieldset>*@
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.contractType, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.contractType, new SelectList(TrialMemberships.getContractType(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.contractType, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <div id="tm">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.trialNights, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.trialNights, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.trialNights, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.weekendNights, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.weekendNights, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.weekendNights, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.weekdayNights, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.weekdayNights, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.weekdayNights, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.referralNights, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.referralNights, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.referralNights, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.trialExpDate, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.trialExpDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tmPaymentsStartDate, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                </div>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmContractDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmContractDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmContractDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmSaleAmount, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmSaleAmount, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.tmSaleAmount, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+            </div>
+            <div class="dl-horizontal col-md-4">
+                
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmInterestRate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmInterestRate, new { htmlAttributes = new { @class = "form-control", data_mask = "00.00" } })
+                        @Html.ValidationMessageFor(model => model.tmInterestRate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <div id="sa">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.advantageWeeks, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.advantageWeeks, new { htmlAttributes = new { @class = "form-control", data_mask = "00.00" } })
+                            @Html.ValidationMessageFor(model => model.trialNights, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.advantageExpDate, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.advantageExpDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tmPaymentsStartDate, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                    @*<fieldset class="form-group">
+                        @Html.LabelFor(model => model.quickWeeks, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.quickWeeks, new { htmlAttributes = new { @class = "form-control", data_mask = "00.00" } })
+                            @Html.ValidationMessageFor(model => model.trialNights, "", new { @class = "text-danger" })
+                        </div>
+
+                    </fieldset>*@
+
+                    <fieldset class="form-group">
+                        @Html.LabelFor(model => model.quickWeeksExpDate, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.quickWeeksExpDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tmPaymentsStartDate, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                </div>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmPaymentsStartDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmPaymentsStartDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmPaymentsStartDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                @*<fieldset class="form-group">
+                    <label class="control-label" for="tmRoomType">Room Type</label>
+                    <div class="col-md-12">
+                        <select class="form-control text-box single-line" name="tmRoomType">
+                            <option value="1 bedroom">1 bdrm</option>
+                            <option value="2 bedroom">2 bdrm</option>
+                            <option value="3 bedroom">3 bdrm</option>
+                        </select>
+                    </div>
+                </fieldset>*@
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmRoomType, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmRoomType, new SelectList(TrialMemberships.getRoomType(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmRoomType, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+            </div>
+            <div class="dl-horizontal col-md-4">
+
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmNumberofDownPayments, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmNumberofDownPayments, new { htmlAttributes = new { @class = "form-control", data_mask = "99" } })
+                        @Html.ValidationMessageFor(model => model.tmNumberofDownPayments, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                @*<fieldset class="form-group">
+                    <label class="control-label" for="tmNumberPayments">Number of Payments</label>
+                    <div class="col-md-12">
+                        <select class="form-control text-box single-line" name="tmNumberPayments">
+                            <option value="12">12 months</option>
+                            <option value="18">18 months</option>
+                            <option value="24">24 months</option>
+                        </select>
+                    </div>
+                </fieldset>*@
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmNumberPayments, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmNumberPayments, new SelectList(TrialMemberships.getPaymentsQuantitiesArray(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmNumberPayments, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+
+                @*<fieldset class="form-group">
+                    <label class="control-label" for="tmQualification">Qualification</label>
+                    <div class="col-md-12">
+                        <select class="form-control text-box single-line" name="tmQualification">
+                            <option value="QA">Qualified International, Credit Card</option>
+                            <option value="QB">Qualified International, Debit Card</option>
+                            <option value="NA">Qualified National, Credit Card</option>
+                        </select>
+                    </div>
+                </fieldset>*@
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmQualification, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmQualification, new SelectList(TrialMemberships.getQualificationsArray(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmQualification, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.deposit, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.deposit, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.deposit, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmCurrency, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmCurrency, new SelectList(TrialMemberships.getCurrencyArray(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmCurrency, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmListPrice, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmListPrice, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.tmListPrice, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                @*<fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmListPrice, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.tmListPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmListPrice, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>*@
+
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmComments, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.tmComments, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmComments, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        
+        @Html.Partial("Partial_SalesMember_Selection")
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="buttonSave" />
+            </div>
+        </div>
+    </div>
+
+
+}
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+
+@section Scripts {
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+
+@*<script src="~/Scripts/scriptDate.js"></script>*@
+    <script>
+        $('#contractType').on("change", function () {
+            var selected = $("#contractType").val();
+        if (selected == "TM") {
+            $("#tm").show();
+            $("#sa").hide();
+        } else {
+            if (selected == "SA") {
+                $("#tm").hide();
+                $("#sa").show();
+            } else {
+                if (selected == "TSA") {
+                    $("#tm").show();
+                    $("#sa").show();5
+                }
+            }
+        }
+    });
+    </script>
+    <script>
+    $("#btn").change(function () {
+        var CortarTexto = $("#texto").val();
+        $("#parrafos").val();
+
+    });
+
+    </script>
+    <script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+    <!-- polyfiller file to detect and load polyfills -->
+    <script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+    <script>
+    //webshims.setOptions('waitReady', false);
+    //webshims.setOptions('forms-ext', { types: 'date' });
+    //webshims.polyfill('forms forms-ext');
+    </script>
+<script>
+    initializeSalesMemberSelection();
+</script>
+<script>
+    //Lo que se hace aqui es mostrar los miembros OPCinHouse u ocultarlos
+    //al igual que con los OPCoutHouse se muestran o se ocultan dependiendo del estado del dropdown
+        $("#OpcRolSelection .OpcRolSelection").change(function () {
+            selectedRol = $(this).children("option").filter(":selected").text()
+            if (selectedRol == '@Rol.SalesMembersTypesNames.OPC_IN_HOUSE') {
+                $('#InHouseSalesMembersSelection').show()
+                $('#OutHouseSalesMembersSelection').hide()
+            } else if (selectedRol == '@Rol.SalesMembersTypesNames.OPC_OUT_HOUSE') {
+                $('#InHouseSalesMembersSelection').hide()
+                $('#OutHouseSalesMembersSelection').show()
+            }
+        })
+    //Se obtiene el valor que traen los select y se le asigan al input hiden de salesmember[0]
+        $('#OPCSalesMembers1').change(function () {
+            selectedOPCMember = $(this).val();
+            $('#SalesMembers[type=hidden]').val(selectedOPCMember);
+        })
+        $('#OPCSalesMembers2').change(function () {
+            selectedOPCMember = $(this).val();
+            $('#SalesMembers[type=hidden]').val(selectedOPCMember);
+        })
+</script>
+}

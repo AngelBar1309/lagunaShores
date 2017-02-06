@@ -1,0 +1,58 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.Deposit>
+@using LagunaShoreResort2.Models
+
+@{ 
+    var contractID = ViewBag.contractID;
+    var contractType = ViewBag.contractType;
+    var year = ViewBag.year != null? ViewBag.year : DateTime.Now.Year;
+    //Determining if deposits shown are HOA or regular deposits
+    var isHOA = ViewBag.isHOA != null && ViewBag.isHOA;
+}
+
+@if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                                        || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+        {
+            @Html.ActionLink("New Deposit", "Create", "Deposit", new { id = contractID, contractType = contractType, isHOA = isHOA,year=year },
+            new { data_modal = "", id = "btnCreate", @class = "btn btn-small btn-primary" })
+        }
+<div id="panelDepositDetails" class="panel panel-info">
+    <div class="panel-heading">
+        Deposits
+    </div>
+    <div class="panel-body">
+        <!--Legend for colors code in report-->
+        <div class="panel">
+            <div class="legend">
+                <div class="legend-square row_canceled_reg">  </div>
+                <div class="legend-label">Not verified</div>
+            </div>
+        </div>
+        <table class="table-responsive table-striped col-xs-12">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.DepositDate)</th>
+                <th>@Html.DisplayNameFor(model => model.RefNumber)</th>
+                <th>@Html.DisplayNameFor(model => model.DepositDate)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrencyType)</th>
+                <th>@Html.DisplayNameFor(model => model.PayMethod)</th>
+                <th>@Html.DisplayNameFor(model => model.depositComments)</th>
+            </tr>
+            @foreach (Deposit deposit in Model)
+            {
+                <tr class="@(deposit.verification?"":"row_canceled_reg")">
+                    <td>@deposit.DepositDate.ToShortDateString()</td>
+                    <td>@deposit.RefNumber</td>
+                    <td>@String.Format("{0:n}", deposit.Amount)</td>
+                    <td>@deposit.CurrencyType</td>
+                    <td>@deposit.PayMethod</td>
+                    <td>@deposit.depositComments</td>
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                                    || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER))
+                    {
+                        <td class="hidden-print">@Html.ActionLink("Edit", "Edit", "Deposit", new { id = deposit.noFolio, contractType, isHOA = isHOA }, null)</td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+

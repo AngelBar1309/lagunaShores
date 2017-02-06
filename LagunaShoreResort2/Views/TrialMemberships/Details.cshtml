@@ -1,0 +1,413 @@
+﻿@model LagunaShoreResort2.Models.TrialMemberships
+@using LagunaShoreResort2.Models;
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<PaymentDeposits> payments = Deposit.getDepositsInPayments(null, Model, null);
+}
+
+<div>
+    <p class="hidden-print">
+
+        @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                    || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+        {
+            if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && Model.tmVerifiedByAdmin == true)
+            { }
+            else
+            {
+                @Html.ActionLink("Edit Contract", "Edit", new { id = Model.trialMembershipID }) @(" |")
+            }
+        }
+        @Html.ActionLink("Client Details", "Details", "Client", new { id = Model.clientID }, null)
+    </p>
+    <h1>Trial Membership Contract Details</h1>
+    <div id="details" class="panel panel-info">
+        <div class="panel-heading">Details</div>
+        <div class="panel-body row">
+            <dl class="dl-horizontal col-xs-6">
+                <dt>
+                    @Html.DisplayNameFor(model => model.contractNumberTM)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.contractNumberTM)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.client.legalName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.client.legalName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.client.secondLegalName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.client.secondLegalName)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.contractType)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.contractType)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmRoomType)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmRoomType)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.trialNights)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.trialNights)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.trialExpDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.trialExpDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmContractDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmContractDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmSaleAmount)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmSaleAmount)
+                </dd>
+                @if (Model.deposit > 0)
+                {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.deposit)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.deposit)
+                    </dd>
+                }
+                else
+                {
+                    double dp = (double)Model.tmSaleAmount * .30;
+                    string down = dp.ToString("#,##0.00");
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.deposit)
+                    </dt>
+                    <dd>
+                        @down
+                    </dd>
+
+                }
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmInterestRate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmInterestRate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmVerifiedByAdmin)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmVerifiedByAdmin)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmVerificationDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmVerificationDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmRequestToAccountat)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmRequestToAccountat)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmRequestToAccountantDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmRequestToAccountantDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Concord)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Concord)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.csToConcord)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.csToConcord)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.csToConcordDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.csToConcordDate)
+                </dd>
+                <dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmCommissionPaid)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmCommissionPaid)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmCommissionPaidDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmCommissionPaidDate)
+                </dd>
+            </dl>
+            <dl class="dl-horizontal col-xs-6">
+
+
+                <dt>
+                    Total Paid
+                </dt>
+
+                <dd>
+                    $@String.Format("{0:n}", Deposit.getTotalPaid(null, Model,null))
+                </dd>
+                <dt>
+                    Current Balance
+                </dt>
+                <dd>
+                    $@String.Format("{0:n}", Deposit.getCurrentBalance(null, Model,null))
+                </dd>
+                <dt>
+                    PMT
+                </dt>
+                <dd>
+                    $@(String.Format("{0:n}", Deposit.getPMT(null, Model,null)) + " " + Model.tmCurrency)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmCurrency)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmCurrency)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmCanceledContract)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmCanceledContract)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmCanceledContractDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmCanceledContractDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmPaymentsStartDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmPaymentsStartDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmNumberofDownPayments)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmNumberofDownPayments)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmNumberPayments)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmNumberPayments)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmQualification)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmQualification)
+                </dd>
+
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmListPrice)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.tmListPrice)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.advantageWeeks)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.advantageWeeks)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.advantageExpDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.advantageExpDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.quickWeeksExpDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.quickWeeksExpDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.tmComments)
+                </dt>
+
+                <dd>
+                    @Html.TextAreaFor(model => model.tmComments, new { @readonly = "readonly", rows = 5 })
+                </dd>
+            </dl>
+        </div>
+    </div>
+    @if (Model.trialSalesMembers != null && Model.trialSalesMembers.Count > 0)
+    {
+         //Si hay miembos entonces solo lo podran personas autorizadas//
+        if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+     || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) 
+     || User.IsInRole(AccountRolesNames.CEO)  
+     || User.IsInRole(AccountRolesNames.VLO) || User.IsInRole(AccountRolesNames.CONCIERGE)
+     || User.IsInRole(AccountRolesNames.ACCOUNTANT) || User.IsInRole(AccountRolesNames.OWNER_SERVICES)) { 
+        //Solo estos usuarios pueden hacer un comision request si el dwon payment ya se haya completado//
+            if ((User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+            || User.IsInRole(AccountRolesNames.VLO) || User.IsInRole(AccountRolesNames.ACCOUNTANT))
+            && Deposit.isDownPaymentCompleted(null, Model,null))
+        {
+            @Html.ActionLink("Request Commision", "RequestComission", "TrialMemberships",
+            new { id = Model.trialMembershipID, contractType = Model.contractType }, new { @class = "btn btn-small btn-primary" })
+        }
+        <div id="panelSalesMembers" class="panel panel-info">
+            <div class="panel-heading">Sales Members</div>
+            <div class="panel-body">
+                <table id="depositsPaymentsTable" class="table-responsive table-striped">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => Model.trialSalesMembers.FirstOrDefault().rol.type)</th>
+                        <th>@Html.DisplayNameFor(model => Model.trialSalesMembers.FirstOrDefault().rol.comssion)</th>
+                        <th>Legal Name</th>
+                    </tr>
+                    @foreach (TrialSalesMembers csm in Model.trialSalesMembers)
+                    {
+                     <tr>
+                            <td>@csm.rol.type</td>
+                            <td>@csm.rol.comssion%</td>
+                            <td>@(csm.salesMember.firtName + " " + csm.salesMember.lastName)</td>
+                     </tr>
+                    }
+                </table>
+            </div>
+        </div>
+        }
+    }
+    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+     || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) 
+     || User.IsInRole(AccountRolesNames.CEO) || User.IsInRole(AccountRolesNames.SALES_MANAGER)
+     || User.IsInRole(AccountRolesNames.VLO) || User.IsInRole(AccountRolesNames.CONCIERGE)
+     || User.IsInRole(AccountRolesNames.ACCOUNTANT) || User.IsInRole(AccountRolesNames.OWNER_SERVICES)) { 
+        <div id="panelDepositDetails" class="panel panel-info">
+        <div class="panel-heading">Amortization Schedule</div>
+        <div class="panel-body">
+            <table class="table-responsive table-striped col-xs-12">
+                <tr>
+                    <th>No.</th>
+                    <th>Date To Pay</th>
+                    <th>Principal</th>
+                    <th>Interest</th>
+                    <th>Remaining Principal</th>
+                    <th>Remaining Interest</th>
+                    <th>Deposit</th>
+                    <th>Balance</th>
+                    <th>No. Folio</th>
+                    <th>Ref. Number</th>
+                    <th>Payment Type</th>
+                </tr>
+                @foreach (PaymentDeposits pd in payments)
+                {
+                    <tr>
+                        <td>@pd.payment.paymentNumber</td>
+                        <td>@pd.payment.dateToPay.ToShortDateString()</td>
+                        <td>@String.Format("{0:n}", pd.payment.Amortization)</td>
+                        <td>@String.Format("{0:n}", pd.payment.Interest)</td>
+                        <td>@String.Format("{0:n}", pd.remainingAmortization)</td>
+                        <td>@String.Format("{0:n}", pd.remainingInterest)</td>
+                        <td>@String.Format("{0:n}", pd.deposit.getAmountInContractCurrency(Model.tmCurrency))</td>
+                        <td>@String.Format("{0:n}", pd.balance)</td>
+                        <td>
+                            @if (pd.deposit.noFolio == 0)
+                            {
+                                @Html.Raw("--");
+                            }
+                            else
+                            {
+                                @pd.deposit.noFolio
+                            }
+                        </td>
+                        <td>@pd.deposit.RefNumber</td>
+                        <td>@pd.payment.paymentType</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+
+        ViewBag.contractID = Model.trialMembershipID;
+        ViewBag.contractType = Model.contractType;
+        var deposits = Model.deposits.Where(dep => !dep.Refund).OrderBy(dep => dep.DepositDate);
+        @Html.Partial("../Deposit/Partial_Generic_DepositList", deposits)
+    }
+</div>
+
+

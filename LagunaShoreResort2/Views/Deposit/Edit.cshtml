@@ -1,0 +1,149 @@
+﻿@model LagunaShoreResort2.Models.Deposit
+@using LagunaShoreResort2.Models
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isHOA = ViewBag.isHOA;
+
+    int contractID = Model.getContractID(isHOA);
+    int clientID = Model.getClientID(isHOA); ;
+
+    String controllerName = Model.getControllerName();
+    String contractType = Model.getContractType(isHOA);
+    String contractNumber = Model.getContractNumber(isHOA);
+}
+
+<div>
+    @Html.ActionLink("Back to Contract", "Details", controllerName, new { id = contractID }, null) |
+    @Html.ActionLink("Back to Client Details", "Details", "Client", new { id = clientID }, null) |
+    @*TEMPORAL*@
+    @Html.ActionLink("Delete","Delete",new { id = Model.noFolio})
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4> Edit @(isHOA?"HOA":"") Deposit</h4>
+    <div class="panel-body row">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => Model.noFolio)
+        <input id="isHOA" name="isHOA" value="true" type="checkbox" class="hidden" @(isHOA ? "checked" : "") />
+        <div class="dl-horizontal col-md-4">
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.salesContract.contractNumber, new { @class = "control-label" })
+                <div class="col-md-12">
+                    @*Fractional Contracts*@
+                    @if (contractType == "BA" || contractType == "FA")
+                    {
+                        //Contract foreingkey is selected if is HOA or not
+                        if (!isHOA) {
+                            <input name="salesContractID" type="hidden" value="@contractID">
+                        }
+                        else {
+                            <input name="salesContractID_HOA" type="hidden" value="@contractID">
+                        }
+                        @contractNumber
+                    }
+                    @*Real State Contracts*@
+                    else if (contractType == "RS")
+                    {
+                        //Contract foreingkey is selected if is HOA or not
+                        if (!isHOA) {
+                            <input name="realStateContractID" type="hidden" value="@contractID">
+                        }
+                        else {
+                            <input name="realStateContractID_HOA" type="hidden" value="@contractID">
+                        }
+                        @Model.realStateContractID
+                    }
+                    @*Trial Membership Contracts*@
+                    else
+                    {
+                        <input name="trialMembershipID" type="hidden" value="@contractID">
+                        @contractNumber
+                    }
+                </div>
+            </fieldset>
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.DepositDate, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+
+                    @Html.EditorFor(model => model.DepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DepositDate, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.Refund, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Refund, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Refund, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+        </div>
+        <div class="dl-horizontal col-md-4">
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.ExchangeRate, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ExchangeRate, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.0000", data_mask_reverse = "true" } })
+                    @Html.ValidationMessageFor(model => model.ExchangeRate, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.RefNumber, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.RefNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.PayMethod, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.PayMethod, new SelectList(Deposit.getPaymentMethodsArray(), "Value", "Text"), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PayMethod, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.verification, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.verification, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.verification, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+        </div>
+        <div class="dl-horizontal col-md-4">
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.CurrencyType, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.CurrencyType, new SelectList(Deposit.getCurrencyArray(), "Value", "Text"), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CurrencyType, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+            <fieldset class="form-group">
+                @Html.LabelFor(model => model.depositComments, new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.depositComments, new { @class = "form-control", rows = 5 })
+                    @Html.ValidationMessageFor(model => model.depositComments, "", new { @class = "text-danger" })
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<div class="panel-body row">
+    <input type="submit" value="Edit" class="btn btn-success btn-lg col-md-2 col-md-offset-5" />
+</div>
+}
+
+@section Scripts {
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

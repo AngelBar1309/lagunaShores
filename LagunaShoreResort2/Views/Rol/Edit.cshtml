@@ -1,0 +1,73 @@
+﻿@model LagunaShoreResort2.Models.Rol
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Rol</h4>
+        <hr />
+        <div class="panel-body row">
+            <div class="dl-horizontal col-md-6">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.rolID)
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.type, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.type, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.type, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.mandatory, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @*<div class="checkbox">*@
+                          
+                            @Html.EditorFor(model => model.mandatory, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.mandatory, "", new { @class = "text-danger" })
+                        </div>
+                    @*</div>*@
+                </fieldset>
+             
+                </div>
+            <div class="dl-horizontal col-md-6">
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.comssion, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.comssion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.comssion, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+               
+                
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.inEveryContract, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.inEveryContract, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.inEveryContract, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="panel-body row">
+            <input type="submit" value="Save" class="btn btn-success btn-lg col-md-2 col-md-offset-5">
+        </div>
+    </div>
+}
+
+<div>
+@Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+}

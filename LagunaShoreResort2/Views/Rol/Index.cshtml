@@ -1,0 +1,55 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.Rol>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<div class="panel panel-primary">
+        <div class="panel-heading">Rols Administration</div>
+        <table class="table table-bordered table-hover">
+            
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.type)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.comssion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.mandatory)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.inEveryContract)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.comssion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.mandatory)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.inEveryContract)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.rolID }) 
+                            @*@Html.ActionLink("Details", "Details", new { id = item.rolID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.rolID })*@
+                        </td>
+                    </tr>
+                }
+
+            </table>
+    </div>

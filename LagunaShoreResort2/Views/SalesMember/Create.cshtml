@@ -1,0 +1,145 @@
+﻿@model LagunaShoreResort2.Models.SalesMember
+@using LagunaShoreResort2.Models
+@using LagunaShoreResort2.Models.ViewModels
+@using QualificationOption = LagunaShoreResort2.Models.ViewModels.VMQualificationMemberOption;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    VMMemberQualificationSelection vmQualificationCheckBoxList = ViewBag.SalesMembertTypesCheckBox;
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Register New Member</h4>
+        <hr />
+        <div class="panel-body row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="dl-horizontal col-md-4">
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.firtName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.firtName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.firtName, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.lastName, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset> 
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.countryOfResidence, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.countryOfResidence, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.countryOfResidence, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset> 
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.countryOfOrigin, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.countryOfOrigin, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.countryOfOrigin, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.telephone, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.telephone, new { htmlAttributes = new { @class = "form-control", data_mask = "(000) 000-0000" } })
+                        @Html.ValidationMessageFor(model => model.telephone, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+            </div>
+            <div class="dl-horizontal col-md-4">
+                
+                
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.dateOfBirth, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.dateOfBirth, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.dateOfBirth, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.dateOfHire, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+
+                        @Html.EditorFor(model => model.dateOfHire, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.dateOfHire, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.taxID, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.taxID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.taxID, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.socialMedia, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.socialMedia, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.socialMedia, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+            </div>
+            <div class="dl-horizontal col-md-4">
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.emergencyContactName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.emergencyContactName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.emergencyContactName, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.emergencyContact, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.emergencyContact, new { htmlAttributes = new { @class = "form-control", data_mask = "(000) 000-0000" } })
+                        @Html.ValidationMessageFor(model => model.emergencyContact, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group check-box-list">
+                    <legend>Qualifications:</legend>
+                    @Html.Partial("Partial_MembertTypesCheckbox", vmQualificationCheckBoxList)
+                </fieldset>
+            </div>
+        </div>
+        <div class="panel-body row">
+            <input type="submit" value="Create" class="btn btn-success btn-lg col-md-2 col-md-offset-5">
+        </div>
+    </div>
+        
+}
+
+
+@section Scripts {
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+    }

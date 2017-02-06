@@ -1,0 +1,107 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.SalesMember>
+@using LagunaShoreResort2.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+@Html.ActionLink("Show with inactive sales members","Index",new { showDroppedOut = true})
+<div class="panel panel-primary">
+    <div class="panel-heading">Sales Members</div>
+
+    <div class="panel-body ">
+       @Html.ActionLink("Add", "Create", "SalesMember", null, new { data_modal = "", id = "btnCreate", @class = "btn btn-small btn-primary pull-right" })
+    </div>
+    @*<h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.salesMemberID)
+            </th>
+            <th>
+                Legal Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.telephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.emergencyContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.taxID)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr class='@(item.droppedOutDate!=null?"row_canceled_reg":"")'>
+                <td>
+                    @Html.DisplayFor(model=>item.salesMemberID)
+                </td>
+                <td>
+                    @(item.firtName +" "+ item.lastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.telephone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emergencyContact)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.taxID)
+                </td>
+                <td class="function-cell" style="width:10px">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            @if (User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.VLO)) 
+                            { 
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.salesMemberID }, new { data_modal = "" })</li>
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR)) 
+                            { 
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.salesMemberID }, new { data_modal = "" })</li>
+                            <li>@Html.ActionLink("Edit", "Edit", new { id = item.salesMemberID }, new { data_modal = "" })</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Delete", "Delete", new { id = item.salesMemberID }, new { data_modal = "" })</li>
+                            }
+                        </ul>
+                    </div>
+            </tr>
+        }
+
+    </table>
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modalform")
+}
+
+

@@ -1,0 +1,60 @@
+﻿@model LagunaShoreResort2.Models.ViewModels.VMFilterContractReport
+@using LagunaShoreResort2.Models;
+@using LagunaShoreResort2.Models.ViewModels
+@using CommissionPaymentStatus = LagunaShoreResort2.Models.ViewModels.VMFilterContractReport.CommissionPaymentStatus;
+
+@{
+    VMFilterContractReport vmFilter = Model;
+}
+
+@using (Html.BeginForm("Report", vmFilter.contractTypeName, FormMethod.Get, new { @class = "panel-body filter hidden-print" }))
+{
+    <div class="col-xs-3">
+        @Html.LabelFor(filter => vmFilter.start)
+        @Html.EditorFor(filter => vmFilter.start, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(filter => vmFilter.start, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-xs-3">
+        @Html.LabelFor(filter => vmFilter.end)
+        @Html.EditorFor(filter => vmFilter.end, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(filter => vmFilter.end, "", new { @class = "text-danger" })
+    </div>
+        <div class="col-xs-3">
+            @Html.LabelFor(filter => vmFilter.commissionPaymentStatus)
+            @if (User.IsInRole(AccountRolesNames.ACCOUNTANT))
+            {
+                @Html.DropDownListFor(model => vmFilter.commissionPaymentStatus,
+                new SelectList(VMFilterContractReport.getCommissionPaymentStatusOptionsAccountant(),
+                         "Value", "Text", CommissionPaymentStatus.COMMISSION_REQUESTED), new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.DropDownListFor(model => vmFilter.commissionPaymentStatus,
+                     new SelectList(VMFilterContractReport.getCommissionPaymentStatusOptions(),
+                    "Value", "Text"), new { @class = "form-control" })
+            }
+        </div>
+        <div class="col-xs-3">
+            <label>Contract Type</label>
+            @*Default selection acording to contract type*@
+            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" class="form-control text-box single-line" style="width:160px" name="contractType" id="contractTypeID">
+                <option @(vmFilter.contractTypeName == SalesContract.ContractTypeName.SALES_CONTRACT ? "selected" : "")
+                        value="../SalesContract/Report">
+                    Fractionals
+                </option>
+
+                <option
+                @(vmFilter.contractTypeName == SalesContract.ContractTypeName.TRIAL_MEMBERSHIPS?
+                    "selected":"")
+                        value="../TrialMemberships/Report"> Trial Memberships
+                </option>
+
+                <option @(vmFilter.contractTypeName == SalesContract.ContractTypeName.REAL_STATE_CONTRACTS ? 
+                    "selected" : "")
+                        value="../RealStateContracts/Report">
+                    Real State Contracts
+                </option>
+            </select>
+        </div>
+        <button class="btn btn-primary right">Search</button>
+}

@@ -1,0 +1,407 @@
+﻿@using LagunaShoreResort2.Models;
+<!DOCTYPE html>
+<html>
+@{
+    //Every time a new screen is open, aside menu is verified to restore its status open or closed
+    String asideToggle = "";
+    if (Session["asideStatus"] != null && (Boolean)Session["asideStatus"] == true)
+    {
+        asideToggle = "aside-toggled";
+    }
+}
+<head>
+    <title>LSRCASystem - @ViewContext.Controller.GetType()</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="/app/css/bootstrap.css">
+
+    <!-- START Page Custom CSS-->
+    <!-- END Page Custom CSS-->
+    <!-- App CSS-->
+    <link rel="stylesheet" href="/app/css/app.css">
+
+
+    <!-- FastClick for mobiles-->
+    <script src="/vendor/fastclick/fastclick.js" type="application/javascript"></script>
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Laguna Shores Resort Contract Administrator" />
+
+    <!--RESPONSIVE FAVICON-->
+    <link rel="icon" type="image/png" sizes="16x16" href="/Content/themes/base/images/favicon/favicon_65x65-04.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/Content/themes/base/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body class="@asideToggle">
+    <!--Restoring aside status-->
+    <!--<div class="container">-->
+    <!-- START Main wrapper-->
+    <section class="wrapper">
+        <!-- START Top Navbar-->
+        <nav role="navigation" class="navbar navbar-default navbar-top navbar-fixed-top">
+            <!-- START navbar header-->
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">
+                    <div class="brand-logo">LSRCA System</div>
+                    <!--<img src="http://www.lagunashoresresort.com/_assets/images/LagunaShores-Elipse-Logo-1.png"
+                         alt="Laguna Shore Resort" />-->
+                </a>
+            </div>
+            <!-- END navbar header-->
+            <!-- START Nav wrapper-->
+            <div class="nav-wrapper">
+                <!-- START Left navbar-->
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#" data-toggle="aside">
+                            <em class="fa fa-align-left"></em>
+                        </a>
+                    </li>
+                    <!--<a href="#" data-toggle="navbar-search">
+                        <em class="fa fa-search"></em>
+                    </a>-->
+                </ul>
+                <!-- END Left navbar-->
+                <!-- START Right Navbar-->
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- END dropdown footer-->
+                    @*<li class="dropdown">
+                        <a href="#" data-toggle="dropdown" data-play="bounceIn" class="dropdown-toggle">
+                            <em class="fa fa-user"></em>
+                        </a>
+                        <!-- START Dropdown menu-->
+                        <ul class="dropdown-menu">
+                            <li>
+                        </ul>
+                        <!-- END Dropdown menu-->
+                    </li>*@
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <div id="profile_information" class="hidden-print">
+                                Welcome <strong>@User.Identity.Name</strong>,<br />
+                                You're logged as
+                                <strong>
+                                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                                    {
+                                        @AccountRolesNames.ADMINISTRATOR
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.ACCOUNTANT))
+                                    {
+                                        @AccountRolesNames.ACCOUNTANT
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.CEO))
+                                    {
+                                        @AccountRolesNames.CEO
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.CONCIERGE))
+                                    {
+                                        @AccountRolesNames.CONCIERGE
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.CONTRACT_MANAGER))
+                                    {
+                                        @AccountRolesNames.CONTRACT_MANAGER
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                                    {
+                                        @AccountRolesNames.CONTRACT_OFFICER
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS))
+                                    {
+                                        @AccountRolesNames.PAYMENTS_RESERVATIONS
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.VLO))
+                                    {
+                                        @AccountRolesNames.VLO
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.SALES_MANAGER))
+                                    {
+                                        @AccountRolesNames.SALES_MANAGER
+                                    }
+                                    else if (User.IsInRole(AccountRolesNames.OWNER_SERVICES))
+                                    {
+                                        @AccountRolesNames.OWNER_SERVICES
+                                    }
+                                </strong>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <!-- END Right Navbar-->
+            </div>
+            <!-- END Nav wrapper-->
+            <!-- START Search form-->
+            <form role="search" class="navbar-form">
+                <div class="form-group has-feedback">
+                    <input type="text" placeholder="Type and hit Enter.." class="form-control">
+                    <div data-toggle="navbar-search-dismiss" class="fa fa-times form-control-feedback"></div>
+                </div>
+                <button type="submit" class="hidden btn btn-default">Submit</button>
+            </form>
+            <!-- END Search form-->
+        </nav>
+        <!-- END Top Navbar-->
+        <!-- START aside-->
+        <aside class="aside hidden-print">
+            <!-- START Sidebar (left)-->
+            <nav class="sidebar">
+                <ul class="nav">
+                    <!-- START Menu-->
+                    @*//////////////////*@
+                    @if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)
+                        || User.IsInRole(AccountRolesNames.ADMINISTRATOR) 
+                        || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS) 
+                        || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) 
+                        || User.IsInRole(AccountRolesNames.VLO) 
+                        || User.IsInRole(AccountRolesNames.CEO)
+                        || User.IsInRole(AccountRolesNames.OWNER_SERVICES))
+                    { 
+                    <li>
+                        <a href="fa-male" title="Clients" data-toggle="collapse-next" class="has-submenu">
+                            <em class="fa fa-male"></em>
+                            <span class="item-text">Clients</span>
+                        </a>
+
+                        <!-- START SubMenu item-->
+                        <ul class="nav collapse ">
+                            <li>
+                                @Html.ActionLink("List", "Index", "Client")
+                            </li>
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                            <li>
+                                @Html.ActionLink("New client", "Create", "Client")
+                            </li>
+                            }
+                            @*<li>
+                                @Html.ActionLink("Add Payments", "Index", "SalesContract")
+                            </li>*@
+                        </ul>
+                        <!-- END SubMenu item-->
+                    </li>
+                    }
+                    @if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) 
+                        || User.IsInRole(AccountRolesNames.ADMINISTRATOR) 
+                        || User.IsInRole(AccountRolesNames.ACCOUNTANT) 
+                        || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) 
+                        || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS) 
+                        || User.IsInRole(AccountRolesNames.VLO)
+                        || User.IsInRole(AccountRolesNames.CEO)
+                        || User.IsInRole(AccountRolesNames.OWNER_SERVICES)
+                         || User.IsInRole(AccountRolesNames.SALES_MANAGER)
+                         || User.IsInRole(AccountRolesNames.CONCIERGE))
+                    { 
+                    <li>
+                        <a href="" title="Sales Contracts" data-toggle="collapse-next" class="has-submenu">
+                            <em class="fa fa-file-o"></em>
+                            <span class="item-text">Contracts</span>
+                        </a>
+                        <!-- START SubMenu item-->
+                        <ul class="nav collapse ">
+                            <li>
+                                @Html.ActionLink("TrialMemberShips", "Index", "TrialMemberShips")
+                                @Html.ActionLink("Fractional", "Index", "SalesContract")
+                                @Html.ActionLink("Real States", "Index", "RealStateContracts")
+                            </li>
+                            @if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == false)
+                            {
+                            <li>
+                                @Html.ActionLink("Report", "Report", "SalesContract")
+                            </li>
+                            }
+                        </ul>
+                    </li>
+                    }
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR)
+                    || User.IsInRole(AccountRolesNames.ACCOUNTANT)
+                    || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                    || User.IsInRole(AccountRolesNames.OWNER_SERVICES))
+                    {
+                        <li>
+                            <a href="fa fa-money" title="Deposits" data-toggle="collapse-next" class="has-submenu">
+                                <em class="fa fa-money"></em>
+                                <span class="item-text">Payments</span>
+                            </a>
+                            <!-- START SubMenu item-->
+                            <ul class="nav collapse ">
+                                <li>
+                                    @Html.ActionLink("List", "Index", "Deposit")
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    <!-- END SubMenu item-->
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.VLO))
+                    { 
+                    <li>
+                        <a href="fa-male" title="Sales Members" data-toggle="collapse-next" class="has-submenu">
+                            <em  class="fa fa-line-chart"></em>
+                            <span class="item-text">Sales Members</span>
+                        </a>
+                        <!-- START SubMenu item-->
+                        <ul class="nav collapse ">
+                            <li>
+                                @Html.ActionLink("List", "Index", "SalesMember")
+                            </li>
+                    @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                            { 
+                            <li>
+                                @Html.ActionLink("New Sales Member", "Create", "SalesMember")
+                            </li>
+                            }
+                        </ul>
+                        <!-- END SubMenu item-->
+                    </li>
+
+                    <!--Administration Menu-->
+                         if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                            { 
+                    <li>
+                        <a href="#" title="Administration" data-toggle="collapse-next" class="has-submenu">
+                            <em class="fa fa-edit"></em>
+                            <span class="item-text">Administration</span>
+                        </a>
+
+                        <!-- START SubMenu item-->
+                        <ul class="nav collapse ">
+                                <li>
+                                    @*<em class="fa fa-users"></em>
+                                    <span class="item-text">*@
+                                    @Html.ActionLink("Users", "Index", "Account")
+                                    @*</span>*@
+                                    @*@Html.ActionLink("Users", "Index", "Account")*@
+                                </li>
+                                <li>
+                                    @*<em class="fa fa-user-plus">*@
+                                    @Html.ActionLink("Add new User", "Register", "Account")
+                                    @*</em>*@
+                                    @*<span class="item-text">@Html.ActionLink("Add new User", "Register", "Account")</span>*@
+                                    @*@Html.ActionLink("Add new User", "Register", "Account")*@
+                                </li>
+                                <li>
+                                    @*<em class="fa fa-lock"></em>*@
+                                    @*<span class="item-text">*@
+                                    @Html.ActionLink("Rols Administrations", "Index", "Rol")
+                                    @*</span>*@
+                                    @*@Html.ActionLink("Rols Administrations", "Index", "Rol")*@
+                                </li>
+                            </ul>
+                        <!-- END SubMenu item-->
+                    </li>
+                         }
+                         }
+                    <!--Administration Menu-->
+                        <li>
+                            <a href="#" title="Help" data-toggle="collapse-next" class="has-submenu">
+                                <em class="fa fa-info-circle"></em>
+                                <span class="item-text">Help</span>
+                            </a>
+
+                            <!-- START SubMenu item-->
+                            <ul class="nav collapse ">
+                                <li>
+                                    <a href="~/Content/ManualdeusuarioLSR.pdf" download>
+                                        <div>Download User Manual</div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- END SubMenu item-->
+                        </li>
+                    
+                    <!-- END Menu-->
+                    <!-- Sidebar footer    -->
+                    <li class="nav-footer">
+                        <div class="nav-footer-divider"></div>
+                        <!-- START button group-->
+                        <div class="btn-group text-center">
+                            @*<button type="button" data-toggle="tooltip" data-title="Add Contact" class="btn btn-link">
+                                <em class="fa fa-user text-muted">
+                                    <sup class="fa fa-plus"></sup>
+                                </em>
+                            </button>*@
+                            @*<button type="button" data-toggle="tooltip" data-title="Settings" class="btn btn-link">
+                                <em class="fa fa-cog text-muted"></em>
+                            </button>*@
+                            <form action="/Account/LogOff" method="post" class="btn btn-link">
+                                @Html.AntiForgeryToken()
+                                <button data-toggle="tooltip" data-title="Logout" class="btn btn-link">
+                                    <em class="fa fa-sign-out text-muted"></em>
+                                </button>
+                            </form>
+                            
+                        </div>
+                        <!-- END button group-->
+                    </li>
+                </ul>
+            </nav>
+            <!-- END Sidebar (left)-->
+        </aside>
+        <!-- End aside-->
+        <!-- START Main section-->
+        <section>
+            <!-- START Page content-->
+            <section class="main-content">
+                @RenderBody()
+            </section>
+            <!-- END Page content-->
+            <hr />
+            <footer class="hidden-print">
+                <p>&copy; @DateTime.Now.Year - Sales Contract Administration - Laguna Shores Resort. Dev. <a href="http://www.netcodesolutions.net/">Netcode</a></p>
+            </footer>
+        </section>
+        <!-- END Main section-->
+    </section>
+    <!-- END Main wrapper-->
+    <!-- START Scripts-->
+    <!-- Main vendor Scripts-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Plugins-->
+    <script src="/vendor/chosen/chosen.jquery.min.js"></script>
+    <script src="/vendor/slider/js/bootstrap-slider.js"></script>
+    <script src="/vendor/filestyle/bootstrap-filestyle.min.js"></script>
+
+    <!-- Animo-->
+    <script src="/vendor/animo/animo.min.js"></script>
+
+    <!-- Sparklines-->
+    <script src="/vendor/sparklines/jquery.sparkline.min.js"></script>
+    <!-- Slimscroll-->
+    <script src="/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- START Page Custom Script-->
+    <!-- END Page Custom Script-->
+    <!-- App Main-->
+    <script src="/app/js/app.js"></script>
+    <!-- END Scripts-->
+    @*<div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+                <p>&copy; @DateTime.Now.Year - Laguna Shores Resort</p>
+            </footer>
+        </div>*@
+
+    @*Styles.Render("~/Content/css")*@
+    @Styles.Render("~/vendor")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/myScripts")
+   
+
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+﻿@model LagunaShoreResort2.Models.TrialMemberships
+@using LagunaShoreResort2.Models
+@using Microsoft.AspNet.Identity;
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if ((User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)==true && Model.userCreateContract == User.Identity.GetUserId()) || (User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)==true && Model.userCreateContract == User.Identity.GetUserId()))
+{
+
+    <h3>Usted no puede Verificar este Contrato</h3>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Trial Memberships</h4>
+        <div class="panel-body row">
+            <div class="dl-horizontal col-md-4">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.trialMembershipID)
+                @Html.HiddenFor(model => model.clientID)
+                @Html.HiddenFor(model => model.contractNumberTM)
+                @Html.HiddenFor(model => model.userCreateContract)
+                @Html.HiddenFor(model => model.tmRequestToAccountantDate)
+                @Html.HiddenFor(model => model.tmRequestToAccountat)
+                @Html.HiddenFor(model => model.tmVerificationDate)
+                @Html.HiddenFor(model => model.tmCanceledContractDate)
+                @Html.HiddenFor(model => model.tmCommissionPaid)
+                @Html.HiddenFor(model => model.tmCommissionPaidDate)
+                @Html.HiddenFor(model => model.csToConcordDate)
+
+
+
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => Model.contractNumberTM, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <input type="text" id="sLegalName" name="sLegalName" class="form-control" value="@Model.contractNumberTM" readonly />
+                        @*@Html.ValidationMessageFor(model => model.contractType, "", new { @class = "text-danger" })*@
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.client.legalName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <input type="text" id="sLegalName" name="sLegalName" class="form-control" value="@Model.client.legalName" readonly />
+                        @*@Html.ValidationMessageFor(model => model.contractType, "", new { @class = "text-danger" })*@
+                    </div>
+                </fieldset>                
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.contractType, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.contractType, new SelectList(TrialMemberships.getContractType(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.contractType, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+              
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmContractDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+
+                        @Html.EditorFor(model => model.tmContractDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmContractDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+              
+                
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmInterestRate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmInterestRate, new { htmlAttributes = new { @class = "form-control", data_mask = "00.00" } })
+                        @Html.ValidationMessageFor(model => model.tmInterestRate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.trialNights, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.trialNights, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.trialNights, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.weekendNights, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.weekendNights, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.weekendNights, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.weekdayNights, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.weekdayNights, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.weekdayNights, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.referralNights, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.referralNights, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.referralNights, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.trialExpDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+
+                        @Html.EditorFor(model => model.trialExpDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.trialExpDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER))
+                {
+                    if ((User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && Model.userCreateContract == User.Identity.GetUserId()) || (User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) == true && Model.userCreateContract == User.Identity.GetUserId()))
+                    { }
+                    else
+                    {
+                        <fieldset class="form-group">
+                            @Html.LabelFor(model => model.tmVerifiedByAdmin, htmlAttributes: new { @class = "control-label" })
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.tmVerifiedByAdmin, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tmVerifiedByAdmin, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </fieldset>
+                    }
+                }
+                </div>
+            <div class="dl-horizontal col-md-4">
+                
+                
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.advantageWeeks, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.advantageWeeks, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.advantageWeeks, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.advantageExpDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+
+                        @Html.EditorFor(model => model.advantageExpDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.advantageExpDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.quickWeeksExpDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+
+                        @Html.EditorFor(model => model.quickWeeksExpDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.quickWeeksExpDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmPaymentsStartDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+
+                        @Html.EditorFor(model => model.tmPaymentsStartDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmPaymentsStartDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmNumberofDownPayments, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmNumberofDownPayments, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmNumberofDownPayments, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmNumberPayments, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmNumberPayments, new SelectList(TrialMemberships.getPaymentsQuantitiesArray(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmNumberPayments, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmQualification, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmQualification, new SelectList(TrialMemberships.getQualificationsArray(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmQualification, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.csToConcord, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.csToConcord, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.csToConcord, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.deposit, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.deposit, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.deposit, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+            </div>
+            <div class="dl-horizontal col-md-4">
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmSaleAmount, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmSaleAmount, new { htmlAttributes = new { @class = "form-control", data_mask = "0000000000.00", data_mask_reverse = "true" } })
+                        @Html.ValidationMessageFor(model => model.tmSaleAmount, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.Concord, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Concord, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Concord, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmCurrency, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmCurrency, new SelectList(TrialMemberships.getCurrencyArray(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmCurrency, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmListPrice, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmListPrice, new { htmlAttributes = new {@class = "form-control", data_mask="0000000000.00",  data_mask_reverse="true" } })
+                        @Html.ValidationMessageFor(model => model.tmListPrice, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+
+                @*<fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmCommissionPaid, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.tmCommissionPaid, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tmCommissionPaid, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmCommissionPaidDate, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+
+                        @Html.EditorFor(model => model.tmCommissionPaidDate, new { htmlAttributes = new { type = "date", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmCommissionPaidDate, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>*@
+
+                
+                @*<fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmPaymentsQuantity, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.tmPaymentsQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tmPaymentsQuantity, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>*@
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmRoomType, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.tmRoomType, new SelectList(TrialMemberships.getRoomType(), "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tmRoomType, "", new { @class = "text-danger" })
+                    </div>
+                </fieldset>
+                
+                <fieldset class="form-group">
+                        @Html.LabelFor(model => model.tmComments, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.tmComments, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tmComments, "", new { @class = "text-danger" })
+                        </div>
+                </fieldset>
+                
+                
+                @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || (User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) == true))
+                            {
+                <fieldset class="form-group">
+                    @Html.LabelFor(model => model.tmCanceledContract, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.tmCanceledContract, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tmCanceledContract, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </fieldset>
+                }
+            </div>
+                </div>
+        @Html.Partial("Partial_SalesMember_Selection")
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="buttonSave" />
+                    </div>
+                </div>
+            </div>
+       
+}
+
+<div>
+    @*@Html.ActionLink("Back to List", "Index");*@
+</div>
+
+@section Scripts {
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+<script>
+    //Lo que se hace aqui es mostrar los miembros OPCinHouse u ocultarlos
+    //al igual que con los OPCoutHouse se muestran o se ocultan dependiendo del estado del dropdown
+        $("#OpcRolSelection .OpcRolSelection").change(function () {
+            selectedRol = $(this).children("option").filter(":selected").text()
+            if (selectedRol == '@Rol.SalesMembersTypesNames.OPC_IN_HOUSE') {
+                $('#InHouseSalesMembersSelection').show()
+                $('#OutHouseSalesMembersSelection').hide()
+            } else if (selectedRol == '@Rol.SalesMembersTypesNames.OPC_OUT_HOUSE') {
+                $('#InHouseSalesMembersSelection').hide()
+                $('#OutHouseSalesMembersSelection').show()
+            }
+        })
+    //Se obtiene el valor que traen los select y se le asigan al input hiden de salesmember[0]
+        $('#OPCSalesMembers1').change(function () {
+            selectedOPCMember = $(this).val();
+            $('#SalesMembers[type=hidden]').val(selectedOPCMember);
+        })
+        $('#OPCSalesMembers2').change(function () {
+            selectedOPCMember = $(this).val();
+            $('#SalesMembers[type=hidden]').val(selectedOPCMember);
+        })
+</script>
+}

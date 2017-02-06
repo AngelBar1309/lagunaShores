@@ -1,0 +1,43 @@
+﻿@model LagunaShoreResort2.Models.ContractSalesMember
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ContractSalesMember</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.salesContract.contractNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.salesContract.contractNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.salesMember.legalName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.salesMember.legalName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.salesMemberType.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.salesMemberType.type)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.contractSalesMemberID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

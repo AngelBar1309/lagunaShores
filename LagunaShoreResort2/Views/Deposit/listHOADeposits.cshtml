@@ -1,0 +1,84 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.Deposit>
+@using LagunaShoreResort2.Models.ViewModels
+@using LagunaShoreResort2.Models
+
+@{
+    ViewBag.Title = "listHOADeposits";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int id = ViewBag.contractID;
+    bool isHOA = true;
+    String contractType = ViewBag.contractType;
+    String contractNumber = ViewBag.contractNumber;
+    DateTime initialHOAMonth = ViewBag.initialHOAMonth;
+    String condoName = ViewBag.condoName;
+    int year = ViewBag.year;
+    String controllerName = "";
+
+    String contractTypeName = "";
+    if (contractType == "FA" || contractType == "BA")
+    {
+        controllerName = "SalesContract";
+        contractTypeName = "Fractional Contract";
+    }
+    else if(contractType=="RS")
+    {
+        controllerName = "RealStateContracts";
+        contractTypeName = "Real State Contract";
+    }
+    List<VMHOAMontlhyFeeRow> HOAFees = ViewBag.HOAFees;
+
+}
+@Html.ActionLink("Back to Contract Details", "Details", controllerName, new { id = id }, null)
+
+<div class="row">
+    <div class="col-sm-3">
+        <label>Condo Name: </label>
+        <span>
+            @condoName
+        </span>
+    </div>
+    <div class="col-sm-3">
+        <label>Contract Type: </label>
+        <span>
+            @contractTypeName
+        </span>
+    </div>
+    <div class="col-sm-3">
+        <label>Contract Number:</label>
+        <span>
+            @contractNumber
+        </span>
+    </div>
+    <div class="col-sm-3">
+        <label>Initial HOA Month:</label>
+        <span>
+            @initialHOAMonth.ToShortDateString()
+        </span>
+    </div>
+</div>
+
+<h1>HOA Yearly Report</h1>
+@using (Html.BeginForm(null,null,FormMethod.Get,new { @class="form-inline row" }))
+{
+    @*HERE SOME HIDDENS TO SEND INFORMATIO FOR REQUEST*@
+    <input name="id" type="hidden" value="@id"/>
+    <input name="contractType" type="hidden" value="@contractType" />
+    <div class="form-group ">
+        <label for="year" class="control-label">Year: </label>
+        <input name="year" id="year" type="number" value="@year" min="@initialHOAMonth.Year" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">See Report</button>
+}
+<br />
+@*Show balance history report in a year*@
+@Html.Partial("Partial_HOAFeesYearlyReport",HOAFees)
+
+<h1>HOA Deposits</h1>
+
+@{
+    /*ViewBag.contractID = id;
+    ViewBag.contractType = contractType;*/
+    ViewBag.isHOA = isHOA;
+    var deposits = Model.Where(dep => !dep.Refund).OrderBy(dep => dep.DepositDate);
+    @Html.Partial("../Deposit/Partial_Generic_DepositList", Model);
+}

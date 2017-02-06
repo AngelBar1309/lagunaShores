@@ -1,0 +1,139 @@
+﻿@model IEnumerable<LagunaShoreResort2.Models.RealStateContract>
+@using LagunaShoreResort2.Models;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="panel panel-primary">
+    <div class="panel-heading">Real State Contracts</div>
+    <div class="panel-body">
+        @using (Html.BeginForm(null, null, FormMethod.Get, new { @class = "col-md-10" }))
+        {
+            <div class="col-md-6">
+                <input type="text" name="buscadorCliente" class="form-control col-md-12" placeholder="Client Name" />
+            </div>
+            <div class="col-md-5">
+                <button name="" class="btn btn-primary">Search</button>
+            </div>
+        }
+        @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+        {
+            @Html.ActionLink("Add", "Create", "RealStateContracts", null, new { data_modal = "", id = "btnCreate", @class = "btn btn-small btn-primary pull-right" })
+        }
+    </div>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.clientAssigned.firstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.clientAssignor.firstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.salesMember.firtName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MLS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ownershipHeld)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.closingDate)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.clientAssigned.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.clientAssignor.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.salesMember.firtName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MLS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ownershipHeld)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.saleAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.saleDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.closingDate)
+                </td>
+                <td class="function-cell">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.realStateContractID })</li>
+
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                if (User.IsInRole(AccountRolesNames.CONTRACT_OFFICER) == true && item.verifiedByAdmin == true)
+                                { }
+                                else
+                                {
+                                    <li>@Html.ActionLink("Edit", "Edit", new { id = item.realStateContractID })</li>
+
+                                }
+                            }
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.PAYMENTS_RESERVATIONS)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER))
+                            {
+                                <li>@Html.ActionLink("Add Payment", "Create", "Deposit", new { id = item.realStateContractID, contractType = "RS" }, null)</li>
+                                <li>@Html.ActionLink("HOA Deposit", "Create", "Deposit", new { id = item.realStateContractID, contractType = "RS", isHOA = true }, null)</li>
+                            }
+                            
+                            @if ((User.IsInRole(AccountRolesNames.ADMINISTRATOR) || User.IsInRole(AccountRolesNames.CONTRACT_MANAGER)
+                                || User.IsInRole(AccountRolesNames.CONTRACT_OFFICER)) && item.deposits.Where(d => d.verification).Count() > 0)
+                            {
+                                <li>@Html.ActionLink("Download Contract", "DownloadContractFile", new { id = item.realStateContractID }, null)</li>
+                            }
+                            @*
+                            @if (downPaymentPaid && (User.IsInRole(AccountRolesNames.ADMINISTRATOR) ||
+                                User.IsInRole(AccountRolesNames.CONTRACT_MANAGER) || User.IsInRole(AccountRolesNames.VLO)
+                                || User.IsInRole(AccountRolesNames.ACCOUNTANT)))
+                            {
+                                <li>@Html.ActionLink("Commission Request", "RequestComission", new { id = item.salesContractID }, null)</li>
+                            }*@
+                            <li class="divider"></li>
+                            @if (User.IsInRole(AccountRolesNames.ADMINISTRATOR))
+                            {
+                                <li>@Html.ActionLink("Delete", "Delete", new { id = item.realStateContractID })</li>
+                            }
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
