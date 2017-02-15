@@ -34,7 +34,7 @@ namespace LagunaShoreResort2.Models.ViewModels
             {
                 //Look for the current contract done for the indicated condo
                 SalesContract contract = condo.salesContracts.OrderByDescending(sc => sc.contractDate).FirstOrDefault();
-                this.salesContractID = contract.salesContractID;
+                this.salesContractID = contract.contractID;
                 this.clientID = contract.clientID;
                 this.condoName = condo.name;
                 this.legalName1 = contract.client.legalName;

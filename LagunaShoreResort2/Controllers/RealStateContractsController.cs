@@ -35,7 +35,7 @@ namespace LagunaShoreResort2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            RealStateContract realStateContract = db.RealStateContracts.Include("deposits").Single(rs => rs.realStateContractID == id);
+            RealStateContract realStateContract = db.RealStateContracts.Include("deposits").Single(rs => rs.contractID == id);
             if (realStateContract == null)
             {
                 return HttpNotFound();
@@ -85,12 +85,12 @@ namespace LagunaShoreResort2.Controllers
                 realStateContract.clientAssignorID = realStateContract.clientAssignorID == 0 ? null : realStateContract.clientAssignorID;
                 db.RealStateContracts.Add(realStateContract);
                 db.SaveChanges();
-                return RedirectToAction("details", "client", new { id = realStateContract.clientAssignedID });
+                return RedirectToAction("details", "client", new { id = realStateContract.clientID });
             }
 
-            var cliente = db.Clients.Find(realStateContract.clientAssignedID);
+            var cliente = db.Clients.Find(realStateContract.clientID);
             ViewBag.clientAssigned = cliente;
-            ViewBag.clientAssignedID = new SelectList(db.Clients, "clientID", "firstName", realStateContract.clientAssignedID);
+            ViewBag.clientAssignedID = new SelectList(db.Clients, "clientID", "firstName", realStateContract.clientID);
             ViewBag.salesMemberID = new SelectList(db.SalesMembers, "salesMemberID", "firtName", realStateContract.salesMemberID);
             ViewBag.condoID = new SelectList(db.Condoes, "condoID", "name");
 
@@ -112,7 +112,7 @@ namespace LagunaShoreResort2.Controllers
                 return HttpNotFound();
             }
             //FALTA TERMINAR EDICION DE CONTRATO DE REAL STATE
-            SelectList clients = new SelectList(db.Clients, "clientID", "firstName", realStateContract.clientAssignedID);
+            SelectList clients = new SelectList(db.Clients, "clientID", "firstName", realStateContract.clientID);
             ViewBag.clientAssigned = realStateContract.clientAssigned;
             ViewBag.clientAssignorID = clients;
             ViewBag.salesMemberID = new SelectList(db.SalesMembers, "salesMemberID", "firtName", realStateContract.salesMemberID);
@@ -135,9 +135,9 @@ namespace LagunaShoreResort2.Controllers
             {
                 db.Entry(realStateContract).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("details", new { id = realStateContract.realStateContractID});
+                return RedirectToAction("details", new { id = realStateContract.contractID });
             }
-            SelectList clients = new SelectList(db.Clients, "clientID", "firstName", realStateContract.clientAssignedID);
+            SelectList clients = new SelectList(db.Clients, "clientID", "firstName", realStateContract.clientID);
             ViewBag.clientAssignedID = clients;
             ViewBag.clientAssignorID = clients;
             ViewBag.salesMemberID = new SelectList(db.SalesMembers, "salesMemberID", "firtName", realStateContract.salesMemberID);
@@ -424,7 +424,7 @@ namespace LagunaShoreResort2.Controllers
             //Se convierte el nuevo documento en un arreglo de bytes
             byte[] fileBytesNuevoContrato = System.IO.File.ReadAllBytes(NewContract);
             //Nombre del docuemnto
-            string fileDownloadName = Deposit.ContractTypes.RS+"_"+rsContract.realStateContractID + nombrePrimerCliente + "&" + nombreSegundoCliente + ".docx";
+            string fileDownloadName = Deposit.ContractTypes.RS+"_"+rsContract.contractID + nombrePrimerCliente + "&" + nombreSegundoCliente + ".docx";
             //Se regresa el nuevo contrato
             return File(fileBytesNuevoContrato, System.Net.Mime.MediaTypeNames.Application.Octet, fileDownloadName);
         }

@@ -40,13 +40,13 @@ namespace LagunaShoreResort2.Controllers
                 result = result.OrderByDescending(c => c.tmContractDate);
                 if (contractType == "ContratosCancelados")
                 {
-                    result = result.Where(c => c.tmCanceledContract == true);
+                    result = result.Where(c => c.canceledContract == true);
                 }
                 else if (contractType == "ContratosNoVerificados")
-                { result = result.Where(c => c.tmVerifiedByAdmin == false); }
+                { result = result.Where(c => c.verifiedByAdmin == false); }
 
                 if (User.IsInRole(AccountRolesNames.ACCOUNTANT))
-                    result = result.Where(c => c.tmRequestToAccountat);
+                    result = result.Where(c => c.requestToAccountant);
 
                 return View(result.ToList().Take(30));
             }
@@ -55,17 +55,17 @@ namespace LagunaShoreResort2.Controllers
                 List<TrialMemberships> defaultResult = trialMemberships.OrderBy(c => c.tmContractDate).ToList();
                 if (User.IsInRole(AccountRolesNames.ACCOUNTANT))
                 {
-                    defaultResult = trialMemberships.Where(c => c.tmRequestToAccountat).Take(30).ToList();
+                    defaultResult = trialMemberships.Where(c => c.requestToAccountant).Take(30).ToList();
                 }
                 else
                 {
                     if (contractType == "ContratosCancelados")
                     {
-                        defaultResult = trialMemberships.Where(c => c.tmCanceledContract == true).ToList();
+                        defaultResult = trialMemberships.Where(c => c.canceledContract == true).ToList();
                     }
                     else if (contractType == "ContratosNoVerificados")
                     {
-                        defaultResult = trialMemberships.Where(c => c.tmVerifiedByAdmin == false).ToList();
+                        defaultResult = trialMemberships.Where(c => c.verifiedByAdmin == false).ToList();
                     }
                     //SdefaultResult = salesContracts.OrderBy(c => c.contractDate).Take(30).ToList();
                 }
@@ -137,9 +137,9 @@ namespace LagunaShoreResort2.Controllers
             {
                 return HttpNotFound();
             }
-            if ((bool)Deposit.isDownPaymentCompleted(null, trialMembership, null) && (bool)trialMembership.tmVerifiedByAdmin && !trialMembership.tmRequestToAccountat)//If commission can be requested
+            if ((bool)Deposit.isDownPaymentCompleted(null, trialMembership, null) && (bool)trialMembership.verifiedByAdmin && !trialMembership.requestToAccountant)//If commission can be requested
             {
-                trialMembership.tmRequestToAccountat = true;
+                trialMembership.requestToAccountant = true;
                 trialMembership.tmRequestToAccountantDate = DateTime.Now;
                 try
                 {
@@ -177,9 +177,9 @@ namespace LagunaShoreResort2.Controllers
             {
                 return HttpNotFound();
             }
-            if ((bool)Deposit.isDownPaymentCompleted(null, trialMembership, null) && (bool)trialMembership.tmRequestToAccountat && !(bool)trialMembership.tmCommissionPaid)//If commission can be requested
+            if ((bool)Deposit.isDownPaymentCompleted(null, trialMembership, null) && (bool)trialMembership.requestToAccountant && !(bool)trialMembership.commissionPaid)//If commission can be requested
             {
-                trialMembership.tmCommissionPaid = true;
+                trialMembership.commissionPaid = true;
                 trialMembership.tmCommissionPaidDate = DateTime.Now;
                 try
                 {
@@ -218,10 +218,10 @@ namespace LagunaShoreResort2.Controllers
                 return HttpNotFound();
             }
 
-            trialMembership.tmRequestToAccountat = false;
+            trialMembership.requestToAccountant = false;
             trialMembership.tmRequestToAccountantDate = null;
 
-            trialMembership.tmCommissionPaid = false;
+            trialMembership.commissionPaid = false;
             trialMembership.tmCommissionPaidDate = null;
 
             try
@@ -244,7 +244,7 @@ namespace LagunaShoreResort2.Controllers
         public ActionResult CanceledContracts()
         {
             var query = from c in db.trialMemberships
-                        where c.tmCanceledContract == true
+                        where c.canceledContract == true
                         select c;
 
             return View(query.ToList());
@@ -254,7 +254,7 @@ namespace LagunaShoreResort2.Controllers
         public ActionResult ContractsUnverified()
         {
             var query = from c in db.trialMemberships
-                        where c.tmVerifiedByAdmin == false
+                        where c.verifiedByAdmin == false
                         select c;
             return View(query.ToList());
         }
@@ -302,10 +302,10 @@ namespace LagunaShoreResort2.Controllers
             trialMemberships.tmVerificationDate = DateTime.Parse("01/01/1800");
             //trialMemberships.tmPaymentsQuantity = int.Parse(Request["tmpaymentsQuantity"]);
 
-            trialMemberships.tmVerifiedByAdmin = false;
-            trialMemberships.tmRequestToAccountat=false;
-            trialMemberships.tmCanceledContract = false;
-            trialMemberships.tmCommissionPaid=false;
+            trialMemberships.verifiedByAdmin = false;
+            trialMemberships.requestToAccountant = false;
+            trialMemberships.canceledContract = false;
+            trialMemberships.commissionPaid=false;
             Boolean validMemberSelection = validateSalesMemberSelector(SalesMemberTypes, SalesMembers);
             if (validMemberSelection && ModelState.IsValid)
             {
@@ -313,26 +313,27 @@ namespace LagunaShoreResort2.Controllers
                 trialMemberships.userCreateContract = User.Identity.GetUserId();     
                 //Generate ContractNumber//
                 DateTime dateNow = DateTime.Now;
-                string contractType = trialMemberships.contractType;
+               // string contractType = trialMemberships.contractType;
+               //TODO revisar el controller y 316
                 //salesContract.clientID = Convert.ToInt32(Request["clientID"]);
                 String NumbersContracts = "";
                 try
                 {
-                    NumbersContracts = ((db.trialMemberships.OrderByDescending(p => p.trialMembershipID).Select(r => r.trialMembershipID).Count()) + 1).ToString();
+                    NumbersContracts = ((db.trialMemberships.OrderByDescending(p => p.contractID).Select(r => r.contractID).Count()) + 1).ToString();
                     //int ClientID = int.Parse(db.Clients.OrderByDescending(p => p.clientID).Select(r => r.clientID).First().ToString())+1;
-                    trialMemberships.contractNumberTM = contractType + NumbersContracts + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
+                  //  trialMemberships.contractNumberTM = contractType + NumbersContracts + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
                 }
                 catch
                 {
-                    if (NumbersContracts != "") { }
-                    trialMemberships.contractNumberTM = contractType + 1 + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
+                   // if (NumbersContracts != "") { }
+                    //trialMemberships.contractNumberTM = contractType + 1 + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
                 }
 
                 db.trialMemberships.Add(trialMemberships);
                 int numRegistersCreated = db.SaveChanges();
                 if (numRegistersCreated > 0)
                 { //If SalesContract have been successfully saved
-                    List<TrialSalesMembers> csms = linkSalesMemberForContract(trialMemberships.trialMembershipID, SalesMemberTypes, SalesMembers);
+                    List<TrialSalesMembers> csms = linkSalesMemberForContract(trialMemberships.contractID, SalesMemberTypes, SalesMembers);
                     db.TrialSalesMembers.AddRange(csms);
                     db.SaveChanges();
                 }
@@ -448,14 +449,14 @@ namespace LagunaShoreResort2.Controllers
             if (validMemberSelection && ModelState.IsValid)
             {
                 //si el contrato fue verificado o cancelado se se agrega la fecha actualcorrespondientemente
-                if (trialMemberships.tmVerifiedByAdmin == true && trialMemberships.tmVerificationDate == null) { trialMemberships.tmVerificationDate = DateTime.Now; }
-                if (trialMemberships.tmCanceledContract == true && trialMemberships.tmCanceledContractDate == null) { trialMemberships.tmCanceledContractDate = DateTime.Now; }
+                if (trialMemberships.verifiedByAdmin == true && trialMemberships.tmVerificationDate == null) { trialMemberships.tmVerificationDate = DateTime.Now; }
+                if (trialMemberships.canceledContract == true && trialMemberships.tmCanceledContractDate == null) { trialMemberships.tmCanceledContractDate = DateTime.Now; }
                 if (trialMemberships.csToConcord == true && trialMemberships.csToConcordDate == null) { trialMemberships.csToConcordDate = DateTime.Now; }
 
                 try
                 {
                     var trialSalesMember = db.TrialSalesMembers.
-                     Where(csm => csm.trialMemberships.trialMembershipID == trialMemberships.trialMembershipID);
+                     Where(csm => csm.trialMemberships.contractID == trialMemberships.contractID);
                     db.TrialSalesMembers.RemoveRange(trialSalesMember);
                     db.SaveChanges();
                 }
@@ -471,7 +472,7 @@ namespace LagunaShoreResort2.Controllers
                 ModelState.AddModelError("INVALID_SALES_MEMBERS_SELECTION", "Pair every Sales Member with his role, go to Sales Member selection and verify fields.");
 
             
-            trialMemberships = db.trialMemberships.Find(trialMemberships.trialMembershipID);
+            trialMemberships = db.trialMemberships.Find(trialMemberships.contractID);
 
             //Roles Selections
             ViewBag.SalesMemberTypes = new SelectList(db.SalesMemberTypes, "rolID", "type");
@@ -568,20 +569,23 @@ namespace LagunaShoreResort2.Controllers
                             {
                                 if (item.contractDate.Year == 2013)
                                 {
-                                    a += item.saleAmount / 12.76;
+                                    double val1 = double.Parse(item.saleAmount.ToString());
+                                    a += val1/ 12.76;
                                 }
                                 else if (item.contractDate.Year == 2014)
                                 {
-                                    a += item.saleAmount / 13.31;
+                                    double val2 = double.Parse(item.saleAmount.ToString());
+                                    a += val2 / 13.31;
                                 }
                                 else if (item.contractDate.Year == 2015)
                                 {
-                                    a += item.saleAmount / 15.87;
+                                    double val3 = double.Parse(item.saleAmount.ToString());
+                                    a += val3 / 15.87;
                                 }
                             }
                             else if (item.currency == "USD")
                             {
-                                a += item.saleAmount;
+                                a += double.Parse(item.saleAmount.ToString());
                             }
                             //a += item.saleAmount;
                             b += item.balance;
@@ -594,20 +598,20 @@ namespace LagunaShoreResort2.Controllers
                             {
                                 if (item.contractDate.Year == 2013)
                                 {
-                                    d += item.saleAmount / 12.76;
+                                    d += double.Parse(item.saleAmount.ToString()) / 12.76;
                                 }
                                 else if (item.contractDate.Year == 2014)
                                 {
-                                    d += item.saleAmount / 13.31;
+                                    d += double.Parse(item.saleAmount.ToString()) / 13.31;
                                 }
                                 else if (item.contractDate.Year == 2015)
                                 {
-                                    d += item.saleAmount / 15.87;
+                                    d += double.Parse(item.saleAmount.ToString()) / 15.87;
                                 }
                             }
                             else if (item.currency == "USD")
                             {
-                                d += item.saleAmount;
+                                d += double.Parse(item.saleAmount.ToString());
                             }
                            // d += item.saleAmount;
                             e += item.balance;

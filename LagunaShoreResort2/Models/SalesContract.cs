@@ -9,15 +9,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LagunaShoreResort2.Models
 {
-    public class SalesContract
+    public class SalesContract : Contracts
     {
-        [DisplayName("Sales Contract ID")]
-        public int salesContractID { get; set; }//Primary Key
+        //[DisplayName("Sales Contract ID")]
+        //public int salesContractID { get; set; }//Primary Key
 
         [DisplayName("Contract Number")]
         public string contractNumber { get; set; }
-        [DisplayName("Contract Type")]
-        public string contractType { get; set; }
+        //[DisplayName("Contract Type")]
+        //public string contractType { get; set; }
         [DisplayName("Type Of Fraction")]
         public string typeOfFraction { get; set; }
 
@@ -26,9 +26,7 @@ namespace LagunaShoreResort2.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime contractDate { get; set; }
 
-        [DisplayName("Sale Amount")]
-        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
-        public decimal saleAmount { get; set; }
+
 
         [DisplayName("Closing Cost")]
         [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
@@ -40,9 +38,7 @@ namespace LagunaShoreResort2.Models
         //***Start
         //Added to Production
         // This is the new DP for all contracts this is not yet done
-        [DisplayName("Deposit")]
-        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
-        public decimal? deposit { get; set; }
+
         //***END
 
         //uncomment when changes are ready to be make for inventory, and upgrades
@@ -73,20 +69,16 @@ namespace LagunaShoreResort2.Models
         public int? previousFCID { get; set; }
 
         //noraml contracts
-        [DisplayName("Interest Rate")]
-        [Range(0, 100)]
-        public double interestRate { get; set; }
+       
 
-        [DisplayName("Verified By Contract Manager")]
-        public bool verifiedByAdmin { get; set; } //Modificable
+     
 
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("Verification Date")]
         public DateTime? verificationDate { get; set; }//Modificable
 
 
-        [DisplayName("Request to Accountant")]
-        public Boolean requestToAccountant { get; set; }//Modificable
+     
 
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("Request to Accountant Date")]
@@ -95,16 +87,14 @@ namespace LagunaShoreResort2.Models
         [DisplayName("Comments")]
         public string comments { get; set; }//Modificable
 
-        [DisplayName("Canceled Contract")]
-        public bool canceledContract { get; set; }//Modificable
+        
 
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("Canceled Date")]
         [DataType(DataType.Date)]
         public DateTime? canceledDate { get; set; }//Modificable
 
-        [DisplayName("Number of DownPayments")]
-        public int NumberofDownPayments { get; set; }
+       
 
         [DisplayName("Qualification ")]
         public String qualification { get; set; }
@@ -115,8 +105,7 @@ namespace LagunaShoreResort2.Models
         [DisplayName("Attachments (English)")]
         public string attachmentsEnglish { get; set; }//Modificable
 
-        [DisplayName("Currency")]
-        public String currency { get; set; }
+      
 
         [DisplayName("Deed Weeks")]
         public int deedWeeks { get; set; }//Modificable
@@ -136,9 +125,7 @@ namespace LagunaShoreResort2.Models
         [DataType(DataType.Date)]
         public DateTime advantageWeeksExp { get; set; }//Modificable
 
-        [DisplayName("Commission Paid")]
-        public Boolean commissionPaid { get; set; }//Modificable
-
+  
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("Commission Paid Date")]
         [DataType(DataType.Date)]
@@ -196,17 +183,14 @@ namespace LagunaShoreResort2.Models
         public int condoID { get; set; }
         public virtual Condo condo { get; set; }
        
-        //llave foranea de  cliente
-        public int clientID { get; set; }
-        public virtual Client client { get; set; }
+     
 
 
         //Un contrato le pertenesen mucho pagos y muchos contractSalesMember
         public virtual ICollection<ContractSalesMember> contractSalesMembers { get; set; }
         
         //Finnace deposits and HOA
-        [InverseProperty("salesContract")]
-        public virtual ICollection<Deposit> deposits { get; set; }
+       
         [InverseProperty("salesContractHOA")]
         public virtual ICollection<Deposit> HOA_deposits { get; set; }
 

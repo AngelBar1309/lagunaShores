@@ -63,7 +63,7 @@ namespace LagunaShoreResort2.Models.ViewModels
         private void initializeVMRealStateAttributes(RealStateContract c)
         {
             // TODO: Complete member initialization
-            this.realStateID = c.realStateContractID;
+            this.realStateID = c.contractID;
             this.contractDate = c.closingDate;
             this.verifiedByAdmin = c.verifiedByAdmin;
             this.requestToAccountant = c.requestToAccountant;
@@ -75,7 +75,7 @@ namespace LagunaShoreResort2.Models.ViewModels
             this.balance = Deposit.getCurrentBalance(null, null, c);
             this.totalPaid = Deposit.getTotalPaid(null, null, c);
             this.client = c.clientAssigned;
-            this.clientID = c.clientAssignedID;
+            this.clientID = c.clientID;
             this.APR = c.interestRate;
             this.PMT = Deposit.getPMT(null, null, c);
         }

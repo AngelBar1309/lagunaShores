@@ -52,7 +52,7 @@ namespace LagunaShoreResort2.Models.ViewModels
         /// <param name="c"></param>
         public VMComissionRequest(SalesContract c)
         {
-            this.salesContractID = c.salesContractID;
+            this.salesContractID = c.contractID;
             this.requestDate = DateTime.Now;
             this.contractNumber = c.contractNumber;
             this.clientName = c.client.legalName;

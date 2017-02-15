@@ -15,7 +15,7 @@ namespace LagunaShoreResort2.Models
         [DisplayName("Member Role")]
         public string type { get; set; }
         [DisplayName("Comission (%)")]
-        public double comssion { get; set; }
+        public decimal comssion { get; set; }
         [DisplayName("Mandatory Rol")]
         public bool mandatory { get; set; }
 

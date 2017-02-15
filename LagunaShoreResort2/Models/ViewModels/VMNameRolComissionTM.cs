@@ -13,7 +13,7 @@ namespace LagunaShoreResort2.Models.ViewModels
         [DisplayName("Type")]
         public String memberType { get; set; }
         [DisplayName("Commission")]
-        public double comission { get; set; }
+        public decimal comission { get; set; }
         [DisplayName("Earnings")]
         public double earning { get; set; }
 
@@ -26,8 +26,10 @@ namespace LagunaShoreResort2.Models.ViewModels
         {
             this.memberName = csm.salesMember.firtName + csm.salesMember.lastName;
             this.memberType = csm.rol.type;
-            this.comission = csm.rol.comssion;
-            this.earning = csm.trialMemberships.tmSaleAmount * (this.comission / 100);
+            comission = csm.rol.comssion;
+            //TODO preguntar a gibran
+            
+            earning =(double) (csm.trialMemberships.saleAmount * (comission / 100));
         }
         /// <param name="csm"></param>
         /// <summary>
@@ -41,7 +43,7 @@ namespace LagunaShoreResort2.Models.ViewModels
             this.memberName = salesMember.firtName + " " + salesMember.lastName;
             this.memberType = rol.type;
             this.comission = rol.comssion;
-            this.earning = trialMemberships.tmSaleAmount * (this.comission / 100);
+            this.earning = (double)(trialMemberships.saleAmount * (comission / 100));
         }
 
         /// <param name="csm"></param>
@@ -55,8 +57,8 @@ namespace LagunaShoreResort2.Models.ViewModels
         {
             this.memberName = "- -";
             this.memberType = rol.type;
-            this.comission = rol.comssion;
-            this.earning = trialMemberships.tmSaleAmount * (this.comission / 100);
+            comission = rol.comssion;
+            earning = (double) (trialMemberships.saleAmount * (this.comission / 100));
         }
     }
 }

@@ -140,7 +140,7 @@ namespace LagunaShoreResort2.Controllers
             //For real state contracts
             else if (contractType == "RS"){
                 deposit.realStateContractID = id;
-                clientID = db.RealStateContracts.Find(id).clientAssignedID;
+                clientID = db.RealStateContracts.Find(id).clientID;
             }
             //Current year by default
             year = year == 0 ? DateTime.Today.Year : year;
@@ -346,7 +346,7 @@ namespace LagunaShoreResort2.Controllers
                     return HttpNotFound();
                 else { 
                     initialHOAMonth = contract.InitialHOAMonth;
-                    contractNumber = contract.realStateContractID.ToString();
+                    contractNumber = contract.contractID.ToString();
                     HOAYearlyPayment = contract.HOAYearlyPayment;
                     condoName = contract.condo.name;
                     deposits = contract.HOA_deposits.Where(d => d.DepositDate.Year == year).ToList();

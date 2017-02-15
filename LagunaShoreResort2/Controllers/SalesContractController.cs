@@ -102,7 +102,7 @@ namespace LagunaShoreResort2.Controllers
             "," + AccountRolesNames.OWNER_SERVICES +
             "," + AccountRolesNames.SALES_MANAGER + "," + AccountRolesNames.CONCIERGE +
             "," + AccountRolesNames.VLO + "," + AccountRolesNames.PAYMENTS_RESERVATIONS)]
-        public async System.Threading.Tasks.Task<ActionResult> Report(VMFilterContractReport vmFilter)
+        public ActionResult Report(VMFilterContractReport vmFilter)
         {
             vmFilter.contractTypeName = SalesContract.ContractTypeName.SALES_CONTRACT; //Controller Name
             /*Filter by salesContracts and is in time range filter*/
@@ -880,7 +880,9 @@ namespace LagunaShoreResort2.Controllers
 
                     foreach (VMTrialMemberships item in query2)
                     {
-                        double dp = item.saleAmount * .30;
+                        //TODO verificar conn gibran
+                        double algo = double.Parse(item.saleAmount.ToString());
+                        double dp = algo * .30;
                         //if(item.downPaymentPaid == true || item.balance <= (decimal)dp)
                         //{
                         if (item.canceledContract == true)
@@ -1554,7 +1556,7 @@ namespace LagunaShoreResort2.Controllers
                 var sc = db.SalesContracts.Find(previousid);
                 ViewBag.condoName = sc.condo.name;
                 ViewBag.previoussCN = sc.contractNumber;
-                ViewBag.scID = sc.salesContractID;
+                ViewBag.scID = sc.contractID;
                 ViewBag.balance = Deposit.getCurrentBalance(sc, null, null);
                 ViewBag.tradeInValue = sc.saleAmount;
             }
@@ -1564,9 +1566,9 @@ namespace LagunaShoreResort2.Controllers
                 previousid = salesContract.previousTMID;
                 var tm = db.trialMemberships.Find(previousid);
                 ViewBag.previousTmCN = tm.contractNumberTM;
-                ViewBag.tmID = tm.trialMembershipID;
+                ViewBag.tmID = tm.contractID;
                 ViewBag.balance = Deposit.getCurrentBalance(null, tm, null);
-                ViewBag.tradeInValue = tm.tmSaleAmount;
+                ViewBag.tradeInValue = tm.saleAmount;
             }
             if (salesContract == null)
             {
@@ -1728,6 +1730,7 @@ namespace LagunaShoreResort2.Controllers
         }
 
         // GET: SalesContract/Create
+        //TODO separar la logica de get de create para los contratos de TM y SC o FA
         [Authorize(Roles = AccountRolesNames.ADMINISTRATOR + "," + AccountRolesNames.CONTRACT_OFFICER)]
         public ActionResult Create(int? id, int? sCID, int? tMID)
         {
@@ -1744,16 +1747,16 @@ namespace LagunaShoreResort2.Controllers
             {
                 var tm = db.trialMemberships.Find(tMID);
                 ViewBag.previousTmCN = tm.contractNumberTM;
-                ViewBag.tmID = tm.trialMembershipID;
+                ViewBag.tmID = tm.contractID;
                 ViewBag.balance = Deposit.getCurrentBalance(null, tm, null);
-                ViewBag.tradeInValue = tm.tmSaleAmount;
+                ViewBag.tradeInValue = tm.saleAmount;
             }
             if (sCID > 0)
             {
                 var sc = db.SalesContracts.Find(sCID);
                 ViewBag.condoName = sc.condo.name;
                 ViewBag.previoussCN = sc.contractNumber;
-                ViewBag.scID = sc.salesContractID;
+                ViewBag.scID = sc.contractID;
                 ViewBag.balance = Deposit.getCurrentBalance(sc, null, null);
                 ViewBag.tradeInValue = sc.saleAmount;
             }
@@ -1800,21 +1803,22 @@ namespace LagunaShoreResort2.Controllers
                 salesContract.userCreateContract = User.Identity.GetUserId();
                 //Generate ContractNumber//
                 DateTime dateNow = DateTime.Now;
-                string contractType = salesContract.contractType;
+                //TODO Esperar para el descriminador de la herencia....
+              ///  string contractType = salesContract.contractType;
                 if (tmID > 0)
                 {
                     var tm = db.trialMemberships.Find(tmID);
-                    salesContract.previousTMID = tm.trialMembershipID;
-                    salesContract.tradeInValue = (decimal?)tm.tmSaleAmount;
+                    salesContract.previousTMID = tm.contractID;
+                    salesContract.tradeInValue = (decimal?)tm.saleAmount;
                     salesContract.previousBalance = Deposit.getCurrentBalance(null, tm, null);
-                    salesContract.newUnitPrice = salesContract.saleAmount - ((decimal)tm.tmSaleAmount); 
+                    salesContract.newUnitPrice = salesContract.saleAmount - ((decimal)tm.saleAmount); 
                     salesContract.upgrade = true;
                     tm.upgraded = true;
                 }
                 if (scID > 0)
                 {
                     var sc = db.SalesContracts.Find(scID);
-                    salesContract.previousFCID = sc.salesContractID;
+                    salesContract.previousFCID = sc.contractID;
                     salesContract.tradeInValue = sc.saleAmount;
                     salesContract.previousBalance = Deposit.getCurrentBalance(sc, null, null);
                     salesContract.newUnitPrice = salesContract.saleAmount - (sc.saleAmount); 
@@ -1825,21 +1829,22 @@ namespace LagunaShoreResort2.Controllers
                 String NumbersContracts = "";
                 try
                 {
-                    NumbersContracts = ((db.SalesContracts.OrderByDescending(p => p.salesContractID).Select(r => r.salesContractID).Count()) + 1).ToString();
+                    NumbersContracts = ((db.SalesContracts.OrderByDescending(p => p.contractID).Select(r => r.contractID).Count()) + 1).ToString();
                     //int ClientID = int.Parse(db.Clients.OrderByDescending(p => p.clientID).Select(r => r.clientID).First().ToString())+1;
-                    salesContract.contractNumber = contractType + NumbersContracts + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
+                    //TODO verificar el type
+                    //salesContract.contractNumber = contractType + NumbersContracts + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
                 }
                 catch
                 {
                     if (NumbersContracts != "") { }
-                    salesContract.contractNumber = contractType + 1 + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
+                    //salesContract.contractNumber = contractType + 1 + dateNow.ToString("dd/MM/yyyy").Replace("/", "");
                 }
 
                 db.SalesContracts.Add(salesContract);
                 int numRegistersCreated = db.SaveChanges();
                 if (numRegistersCreated > 0)
                 { //If SalesContract have been successfully saved
-                    List<ContractSalesMember> csms = linkSalesMemberForContract(salesContract.salesContractID,
+                    List<ContractSalesMember> csms = linkSalesMemberForContract(salesContract.contractID,
                         SalesMemberTypes, SalesMembers);
                     db.ContractSalesMembers.AddRange(csms);
                     db.SaveChanges();
@@ -1851,7 +1856,7 @@ namespace LagunaShoreResort2.Controllers
             else if (!validMemberSelection)
             {
                 ModelState.AddModelError("INVALID_SALES_MEMBERS_SELECTION", "Pair every Sales Member with his role, go to Sales Member selection and verify fields.");
-                ICollection<ContractSalesMember> csms = linkCompleteSalesMemberForContract(salesContract.salesContractID, salesContract.contractSalesMembers);
+                ICollection<ContractSalesMember> csms = linkCompleteSalesMemberForContract(salesContract.contractID, salesContract.contractSalesMembers);
                 salesContract.contractSalesMembers = csms;
             }
 
@@ -2517,15 +2522,15 @@ namespace LagunaShoreResort2.Controllers
                 if (ptm != null)
                 {
                     ViewBag.previousTmCN = ptm.contractNumberTM;
-                    ViewBag.tmID = ptm.trialMembershipID;
+                    ViewBag.tmID = ptm.contractID;
                     ViewBag.balance = Deposit.getCurrentBalance(null, ptm, null);
-                    ViewBag.tradeInValue = ptm.tmSaleAmount;
+                    ViewBag.tradeInValue = ptm.saleAmount;
                 }
                 if (psc != null)
                 {
                     ViewBag.condoName = psc.condo.name;
                     ViewBag.previoussCN = psc.contractNumber;
-                    ViewBag.scID = psc.salesContractID;
+                    ViewBag.scID = psc.contractID;
                     ViewBag.balance = Deposit.getCurrentBalance(psc, null, null);
                     ViewBag.tradeInValue = psc.saleAmount;
                 }
@@ -2566,7 +2571,7 @@ namespace LagunaShoreResort2.Controllers
                 try
                 {
                     var contractSalesMembers = db.ContractSalesMembers.
-                     Where(csm => csm.salesContract.salesContractID == salesContract.salesContractID);
+                     Where(csm => csm.salesContract.contractID == salesContract.contractID);
                     db.ContractSalesMembers.RemoveRange(contractSalesMembers);
                     db.SaveChanges();
                 }
@@ -2577,13 +2582,13 @@ namespace LagunaShoreResort2.Controllers
                 db.Entry(salesContract).State = EntityState.Modified;
                 int registeredModified = db.SaveChanges();
                            
-                return RedirectToAction("details",new { id = salesContract.salesContractID});
+                return RedirectToAction("details",new { id = salesContract.contractID });
             }
             else if (!validMemberSelection)
                 ModelState.AddModelError("INVALID_SALES_MEMBERS_SELECTION", "Pair every Sales Member with his role, go to Sales Member selection and verify fields.");
 
             ViewBag.condoID = new SelectList(db.Condoes, "condoID", "name", salesContract.condoID);
-            salesContract = db.SalesContracts.Find(salesContract.salesContractID);
+            salesContract = db.SalesContracts.Find(salesContract.contractID);
 
             //Roles Selections
             ViewBag.SalesMemberTypes = new SelectList(db.SalesMemberTypes, "rolID", "type");

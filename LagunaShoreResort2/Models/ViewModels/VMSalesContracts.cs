@@ -71,11 +71,11 @@ namespace LagunaShoreResort2.Models.ViewModels
         private void initializeSalesContractAttributes(SalesContract c)
         {
             // TODO: Complete member initialization
-            this.salesContractID = c.salesContractID;
+            salesContractID = c.contractID;
             this.contractNumber = c.contractNumber;
             this.typeOfFraction = c.typeOfFraction;
             this.contractDate = c.contractDate;
-            this.verifiedByAdmin = c.verifiedByAdmin;
+            verifiedByAdmin = c.verifiedByAdmin;
             this.requestToAccountant = c.requestToAccountant;
             this.canceledContract = c.canceledContract;
             this.commissionPaid = c.commissionPaid;
@@ -104,7 +104,7 @@ namespace LagunaShoreResort2.Models.ViewModels
         public VMSalesContract(ContractSalesMember csm)
         {
             initializeSalesContractAttributes(csm.salesContract);
-            this.commissionPercentage = csm.rol.comssion;
+            this.commissionPercentage = (Double)csm.rol.comssion;
             this.rolName = csm.rol.type;
         }
     }

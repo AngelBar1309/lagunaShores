@@ -26,7 +26,7 @@ namespace LagunaShoreResort2.Models.ViewModels
         public String secondClientName { get; set; }
 
         [DisplayName("Sale Amount")]
-        public double saleAmount { get; set; }
+        public decimal saleAmount { get; set; }
 
         [DisplayName("Currency")]
         public String currency { get; set; }
@@ -49,16 +49,16 @@ namespace LagunaShoreResort2.Models.ViewModels
         /// <param name="c"></param>
         public VMComissionRequestTM(TrialMemberships c)
         {
-            this.trialMemberhsipID = c.trialMembershipID;
+            this.trialMemberhsipID = c.contractID;
             this.requestDate = DateTime.Now;
             this.contractNumber = c.contractNumberTM;
             this.clientName = c.client.legalName;
             this.secondClientName = c.client.secondLegalName;
-            this.saleAmount = c.tmSaleAmount;
-            this.currency = c.tmCurrency;
-            this.commissionRequested = c.tmRequestToAccountat;
-            this.verifiedByAdmin = c.tmVerifiedByAdmin;
-            this.commissionPaid = c.tmCommissionPaid;
+            saleAmount = c.saleAmount;
+            this.currency = c.currency;
+            this.commissionRequested = c.requestToAccountant;
+            this.verifiedByAdmin = c.verifiedByAdmin;
+            this.commissionPaid = c.commissionPaid;
 
             //Fill sales member array with Contract-SalesMember association
             membersAndComissions = new List<VMNameRolComissionTM>();

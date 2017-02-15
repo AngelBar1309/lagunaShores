@@ -41,7 +41,7 @@ namespace LagunaShoreResort2.Models.ViewModels
 
         /*For general data*/
         [DisplayName("Sale Amount")]
-        public double saleAmount { get; set; }
+        public decimal saleAmount { get; set; }
 
         [DisplayName("Currency")]
         public String currency { get; set; }
@@ -63,22 +63,22 @@ namespace LagunaShoreResort2.Models.ViewModels
         private void initializeTrialMembershipAttributes(TrialMemberships c)
         {
             // TODO: Complete member initialization
-            this.trialMembershipID = c.trialMembershipID;
+            this.trialMembershipID = c.contractID;
             this.contractNumber = c.contractNumberTM;
-            this.typeOfContract = c.contractType;
+            //this.typeOfContract = c.contractType;
             this.contractDate = c.tmContractDate;
-            this.tmVerifiedByAdmin = c.tmVerifiedByAdmin;
-            this.requestToAccountant = c.tmRequestToAccountat;
-            this.canceledContract = c.tmCanceledContract;
-            this.commissionPaid = c.tmCommissionPaid;
-            this.saleAmount = c.tmSaleAmount;
-            this.currency = c.tmCurrency; 
+            this.tmVerifiedByAdmin = c.verifiedByAdmin;
+            this.requestToAccountant = c.requestToAccountant;
+            this.canceledContract = c.canceledContract;
+            this.commissionPaid = c.commissionPaid;
+            this.saleAmount = c.saleAmount;
+            this.currency = c.currency; 
             this.downPaymentPaid = Deposit.isDownPaymentCompleted(null, c,null);
             this.balance = Deposit.getCurrentBalance(null, c,null);
             this.totalPaid = Deposit.getTotalPaid(null, c, null);
             this.client = c.client;
             this.clientID = c.clientID;
-            this.APR = c.tmInterestRate;
+            this.APR = c.interestRate;
             this.PMT = Deposit.getPMT(null, c, null); 
         }
 
@@ -93,7 +93,7 @@ namespace LagunaShoreResort2.Models.ViewModels
         public VMTrialMemberships(TrialSalesMembers csm)
         {
             initializeTrialMembershipAttributes(csm.trialMemberships);
-            this.commissionPercentage = csm.rol.comssion;
+            commissionPercentage = (double)(csm.rol.comssion);
             this.rolName = csm.rol.type;
         }
     }

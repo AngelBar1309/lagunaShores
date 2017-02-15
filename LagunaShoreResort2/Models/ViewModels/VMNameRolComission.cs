@@ -29,22 +29,22 @@ namespace LagunaShoreResort2.Models.ViewModels
             Double closingCost = (Double)csm.salesContract.closingCost;
             this.memberName = csm.salesMember.firtName + " " + csm.salesMember.lastName;
             this.memberType = csm.rol.type;
-            this.comission = csm.rol.comssion;
+            this.comission = (Double)csm.rol.comssion;
             if (closingCost > 0)
             {
                 Double closingComission = closingCost * 0.10;
                 if (this.memberType == "CLOSER 1" || this.memberType == "CLOSER 2")
                 {
-                    this.earning = csm.salesContract.saleAmount * (decimal)(this.comission / 100) + (decimal)closingComission;
+                    this.earning = csm.salesContract.saleAmount * (decimal)(comission / 100) + (decimal)closingComission;
                 }
                 else
                 {
-                    this.earning = csm.salesContract.saleAmount * (decimal)(this.comission / 100);
+                    earning = csm.salesContract.saleAmount * (decimal)(comission / 100);
                 }
             }
             else
             {
-                this.earning = csm.salesContract.saleAmount * (decimal)(this.comission / 100);
+                this.earning = csm.salesContract.saleAmount * (decimal)(comission / 100);
             }
             
             
@@ -63,7 +63,7 @@ namespace LagunaShoreResort2.Models.ViewModels
             Double closingCost = (Double)salesContract.closingCost;
             this.memberName = salesMember.firtName + " " + salesMember.lastName;
             this.memberType = rol.type;
-            this.comission = rol.comssion;
+            this.comission = (Double)rol.comssion;
             if (closingCost > 0)
             {
                 Double closingComission = closingCost * 0.10;
@@ -94,7 +94,7 @@ namespace LagunaShoreResort2.Models.ViewModels
             Double closingCost = (Double)salesContract.closingCost;
             this.memberName = "- -";
             this.memberType = rol.type;
-            this.comission = rol.comssion;
+            this.comission = (Double)rol.comssion;
             if (closingCost > 0)
             {
                 Double closingComission = closingCost * 0.10;

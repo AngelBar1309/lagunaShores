@@ -149,8 +149,8 @@ namespace LagunaShoreResort2.Models
                 else if (contractType == "TM" || contractType == "SA" || contractType == "TSA")
                 {
                     TrialMemberships tm = getExistingTrialMembershipsFromDB();
-                    currency = tm.tmCurrency;
-                    saleAmount = (decimal)tm.tmSaleAmount;
+                    currency = tm.currency;
+                    saleAmount = (decimal)tm.saleAmount;
                     totalPaid = getTotalPaid(null, tm, null);
                 }
                 //For real state contracts
@@ -219,7 +219,7 @@ namespace LagunaShoreResort2.Models
             {
                 int realStateContractID = this.realStateContractID.Value;
                 ApplicationDbContext db = new ApplicationDbContext();
-                return db.RealStateContracts.Include("deposits").FirstOrDefault(rsc => rsc.realStateContractID == realStateContractID);
+                return db.RealStateContracts.Include("deposits").FirstOrDefault(rsc => rsc.contractID == realStateContractID);
             }
             else
                 return realStateContract;
@@ -569,8 +569,8 @@ namespace LagunaShoreResort2.Models
             else if (tm != null)
             {
                 
-                totalAmount = (double)tm.tmSaleAmount;
-                numberOfDownPayments = tm.tmNumberofDownPayments;
+                totalAmount = (double)tm.saleAmount;
+                numberOfDownPayments = tm.NumberofDownPayments;
                 pmtsQuantity = tm.tmNumberPayments;
                 dateToPay = tm.tmContractDate;
                 if (tm.deposit != null)
@@ -702,9 +702,9 @@ namespace LagunaShoreResort2.Models
             }
             else if (tm != null)
             {
-                monthInterestPercent = (tm.tmInterestRate / 100) / 12;
-                totalAmount = (double)tm.tmSaleAmount;
-                numberOfDownPayments = tm.tmNumberofDownPayments;
+                monthInterestPercent = (tm.interestRate / 100) / 12;
+                totalAmount = (double)tm.saleAmount;
+                numberOfDownPayments = tm.NumberofDownPayments;
                 dateToPay = tm.tmContractDate;
                 balance = totalAmount + closingCost;
                 deposits = tm.deposits.ToList(); 
@@ -800,7 +800,7 @@ namespace LagunaShoreResort2.Models
                         }
                         else if (tm != null)
                         {
-                            montoDeposito = Math.Round(deposit.getAmountInContractCurrency(tm.tmCurrency), 2); //Deposited amount
+                            montoDeposito = Math.Round(deposit.getAmountInContractCurrency(tm.currency), 2); //Deposited amount
                             incompletePayment = false;
                         }
                         else if (rc != null)
@@ -1021,9 +1021,9 @@ namespace LagunaShoreResort2.Models
             }
             else if (tm != null)
             {
-                monthInterestPercent = (tm.tmInterestRate / 100) / 12;
-                totalAmount = (double)tm.tmSaleAmount;
-                numberOfDownPayments = tm.tmNumberofDownPayments;
+                monthInterestPercent = (tm.interestRate / 100) / 12;
+                totalAmount = (double)tm.saleAmount;
+                numberOfDownPayments = tm.NumberofDownPayments;
                 dateToPay = tm.tmContractDate;
                 balance = totalAmount + closingCost;
                 depositss = tm.deposits;
@@ -1114,7 +1114,7 @@ namespace LagunaShoreResort2.Models
                     for (; i<deposits.Count; i++)
                     {
                         Deposit deposit = deposits.ElementAt(i);
-                        decimal paymentCurrency = deposit.getAmountInContractCurrency(tm.tmCurrency);
+                        decimal paymentCurrency = deposit.getAmountInContractCurrency(tm.currency);
                         result += paymentCurrency;
                     }
 
@@ -1168,7 +1168,7 @@ namespace LagunaShoreResort2.Models
                 }
                 else
                 {
-                    result = (decimal)tm.tmSaleAmount;
+                    result = (decimal)tm.saleAmount;
                 }
             }
             else if (rc != null)
@@ -1223,8 +1223,8 @@ namespace LagunaShoreResort2.Models
              else if (tm != null)
              {
                  currentBalance = (double)getCurrentBalance(null, tm, null);
-                 totalDownPayment = ((double)tm.tmSaleAmount) * .3;
-                 result = (((double)tm.tmSaleAmount) - currentBalance) >= totalDownPayment;
+                 totalDownPayment = ((double)tm.saleAmount) * .3;
+                 result = (((double)tm.saleAmount) - currentBalance) >= totalDownPayment;
              }
              else if (rc != null)
              {

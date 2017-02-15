@@ -8,48 +8,46 @@ using System.Web;
 
 namespace LagunaShoreResort2.Models
 {
-    public class TrialMemberships
+    public class TrialMemberships : Contracts
     {
-        [Key]
-        public int trialMembershipID { get; set; }//primary key
+        //[Key]
+        //public int trialMembershipID { get; set; }//primary key
 
         [DisplayName("Contract Number")]
         public string contractNumberTM { get; set; }
-        [DisplayName("Contract Type")]
-        public string contractType { get; set; }
+        //[DisplayName("Contract Type")]
+        //public string contractType { get; set; }
         
         [DisplayName("Contract Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime tmContractDate { get; set; }
 
-        [DisplayName("Sale Amount")]
-        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
-        public double tmSaleAmount { get; set; }
+        //[DisplayName("Sale Amount")]
+        //[DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
+        //public double tmSaleAmount { get; set; }
         //***Start
         //Added to Production
         // This is the new DP for all contracts this is not yet done
-        [DisplayName("Deposit")]
-        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
-        public decimal? deposit { get; set; }
+       
 
         [DisplayName("Upgraded")]
         public bool upgraded { get; set; }
         //***END
 
-        [DisplayName("Interest Rate")]
-        [Range(0, 100)]
-        public double tmInterestRate { get; set; }
-        [DisplayName("Verified by Admin")]
-        public bool tmVerifiedByAdmin { get; set; }
+        //[DisplayName("Interest Rate")]
+        //[Range(0, 100)]
+        //public double tmInterestRate { get; set; }
+        ////[DisplayName("Verified by Admin")]
+        ////public bool tmVerifiedByAdmin { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Verification Date")]
         public DateTime? tmVerificationDate { get; set; }
 
-        [DisplayName("Request to Accountant")]
-        public bool tmRequestToAccountat { get; set; }
+        //[DisplayName("Request to Accountant")]
+        //public bool tmRequestToAccountat { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -91,8 +89,8 @@ namespace LagunaShoreResort2.Models
         [DisplayName("Quick Weeks Expiration Date")]
         public DateTime? quickWeeksExpDate { get; set; }
 
-        [DisplayName("Canceled Contract")]
-        public bool tmCanceledContract { get; set; }
+        //[DisplayName("Canceled Contract")]
+        //public bool tmCanceledContract { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -104,19 +102,19 @@ namespace LagunaShoreResort2.Models
         [DisplayName("Payments Start")]
         public DateTime tmPaymentsStartDate { get; set; }
 
-        [DisplayName("Number of DownPayments")]
-        public int tmNumberofDownPayments { get; set; }
+        //[DisplayName("Number of DownPayments")]
+        //public int tmNumberofDownPayments { get; set; }
         [DisplayName("Number of Payments ")]
         public int tmNumberPayments { get; set; }
         [DisplayName("Qualification ")]
         public String tmQualification { get; set; }
-        [DisplayName("Currency")]
-        public String tmCurrency { get; set; }
+        //[DisplayName("Currency")]
+        //public String tmCurrency { get; set; }
         [DisplayName("List Price")]
         public double tmListPrice { get; set; } 
 
-        [DisplayName("Commission Paid")]
-        public Boolean tmCommissionPaid { get; set; }//Modificable
+        //[DisplayName("Commission Paid")]
+        //public Boolean tmCommissionPaid { get; set; }//Modificable
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -146,11 +144,10 @@ namespace LagunaShoreResort2.Models
         public DateTime? csToConcordDate { get; set; }//Modificable
 
         //llave foranea de  cliente
-        public int clientID { get; set; }
-        public virtual Client client { get; set; }
+      
         //Un contrato le pertenesen mucho pagos y muchos trialSalesMember
         public virtual ICollection<TrialSalesMembers> trialSalesMembers { get; set; }
-        public virtual ICollection<Deposit> deposits { get; set; }
+        
 
         //public List<Payment> getPaymentPlan()
         //{
